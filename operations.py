@@ -19,10 +19,10 @@ def backward_substitution():
 
 
 def pivot(matrix_a, line):
-    for k in range(line, len(A)):
-        if A[k][line] != 0:
-            temp = A[line]
-            A[line] = A[k]
-            A[k] = temp
+    for k in range(line, len(matrix_a)):
+        if matrix_a[k][line] != 0:
+            temp = matrix_a[line]
+            matrix_a[line] = matrix_a[k]
+            matrix_a[k] = temp
     
-    return A
+    return matrix_a
