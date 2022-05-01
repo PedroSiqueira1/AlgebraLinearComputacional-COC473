@@ -7,8 +7,8 @@ matrix_a = np.array([[1,2,2]
              ,[4,6,4]],float)
 
 
-# print(gauss_elimination(matrix_a))
-def solve_equation(N = 0, ICOD = 1, IDET = 0, A = 0, B = 0, TolM = 0.01):
+
+def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = 0, matrix_b = 0, TolM = 0.01):
 
     if (ICOD == 1): # Decomposição LU   
         # Transformação de matrix_a em LU
@@ -22,7 +22,8 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, A = 0, B = 0, TolM = 0.01):
                 for l in range(i+1, len(matrix_a)):
                     matrix_a[l][k] = matrix_a[l][k] - matrix_a[l][i] * matrix_a[i][k]
         
-        return matrix_a
+        matrix_b = op.forward_substitution(matrix_a,matrix_b)
+        return op.backward_substitution(matrix_a,matrix_b)
 
     elif (ICOD == 2): # Cholesky decomposition
         pass
@@ -34,6 +35,11 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, A = 0, B = 0, TolM = 0.01):
     else:
         print("Invalid ICOD")
     return 0
+'''
+A = np.array([[1,2,2]
+   ,[4,4,2]
+   ,[4,6,4]],float)
+B = np.array([3,6,10],float)
 
-print("\n --- \n")
-print(solve_equation(A=matrix_a))
+print(solve_equation(matrix_a=A,matrix_b=B))
+'''

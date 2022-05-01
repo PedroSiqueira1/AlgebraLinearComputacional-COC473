@@ -21,7 +21,6 @@ def backward_substitution(matrix_a,vector_b):
         vector_x[i] = (vector_b[i] - summ)/(matrix_a[i][i])
     return vector_x
 
-
 def pivot(matrix_a, line):
     for k in range(line, len(matrix_a)):
         if matrix_a[k][line] != 0:
