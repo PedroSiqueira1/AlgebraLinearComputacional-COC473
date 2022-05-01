@@ -2,54 +2,31 @@ import numpy as np
 
 import operations as op
 
-class Matrix():
-    matrix = None
-    scope = None    # 'A', 'L' or 'U'
-    size = (None, None)
+def verify_matrix(matrix): # verifies if the created matrix
+    height = len(matrix)
+    if height == 0 or len(matrix[0]) == 0:
+        print("Empty matrix")
+        return False
+    
+    width = len(matrix[0])
+    for c in range(1, height):
+        if len(matrix[c]) != width:
+            print(f"Line {c} has {len(matrix[c])}, when it should have {width}")
+            return False
 
-    def __init__(self, matrix, scope='A'):
-        def valid(matrix, scope): # verifies if the created matrix is valid
-            # SCOPE
-            if scope not in {'A', 'L', 'U'}:
-                print(f"{scope} is an invalid scope, it should be: A, L or U")
+    return True
+
+
+def verify_symmetry(matrix):
+    for line in range(len(matrix)):
+        for column in range(0, line):
+            if matrix[line][column] != matrix[column][line]:
                 return False
+    return True
 
-            # MATRIX - Not empty + all lines must have the same width
-            length = len(matrix)
-            
-            if (size == 0 or len(matrix[0]) == 0):
-                print("Empty matrix")
-                return False
-            
-            width = len(matrix[0])
-            for c in range(1, length):
-                if len(matrix[c]) != width:
-                    print(f"Line {c} has {len(matrix[c])}, when it should have {width}")
-                    return False
-
-            return True
-
-
-        if not valid(matrix, scope):
-            print("ERROR - Invalid matrix")
-
-        self.scope = scope
-        self.matrix = matrix
-        self.size = (len(matrix), len(matrix[0]))
-
-    def get(self, line, column):
-        if not(type(line) == type(column) == 'int'):
-            print(f"Line and Column must be integers, line: {type(line)}, column: {type(column)}")
-        if self.scope == 'A':
-            return self.matrix[line][column]
-
-        elif self.scope == 'U':
-            if column > line:
-                return 0
-
-        elif self.scope == 'L':
-            return 0
-
+matrix_a = np.array([[1,2,2]
+             ,[4,4,2]
+             ,[4,6,4]],float)
 
 # In: matrix_a -> Any matrix
 # Out: The scalar of the matrix matrix_a 
