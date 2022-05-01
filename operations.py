@@ -1,12 +1,18 @@
 ﻿import numpy as np
 
-def forward_substitution(matrix_l, vector_b):
+def forward_substitution(matrix_l, vector_b, triangle=False):
     vector_y = np.zeros(len(vector_b), float) 
     for i in range(len(vector_b)):
         summ = 0
         for j in range(i):
-            summ += matrix_l[i][j] * y[j]   
-        vector_y[i] = (vector_b[i] - summ) #/matrix_l[i][i])
+            summ += matrix_l[i][j] * y[j]
+        
+        if triangle:
+            den = 1
+        else:
+            den = matrix_l[i][i]
+
+        vector_y[i] = (vector_b[i] - summ/den)
 
     return vector_y
 
@@ -46,8 +52,19 @@ def gauss_elimination(matrix_a):
     return matrix_a
 
 
-# VERIFY
-def verify_square(matrix): # verifies if the created matrix
+
+def greater_jacobi(matrix):
+    greater_value = 0
+    for line in range(1, len(matrix)):
+        for column in range(0, line):
+            value = np.mod(matrix[line][column])
+            if value > greater_value:
+                greater_value = value
+                greater_pos = (line, column)
+    return greater_pos, greater_value
+
+# ----- VERIFY -----
+def verify_square(matrix): # verifies if the matrix is square
     height = len(matrix)
     if height == 0 or len(matrix[0]) == 0:
         print("Empty matrix")
@@ -63,7 +80,7 @@ def verify_square(matrix): # verifies if the created matrix
 
 
 def verify_symmetry(matrix):
-    for line in range(len(matrix)):
+    for line in range(1, len(matrix)):
         for column in range(0, line):
             if matrix[line][column] != matrix[column][line]:
                 return False
