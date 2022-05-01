@@ -2,6 +2,27 @@ import numpy as np
 
 import operations as op
 
+def verify_matrix(matrix): # verifies if the created matrix
+    height = len(matrix)
+    if height == 0 or len(matrix[0]) == 0:
+        print("Empty matrix")
+        return False
+    
+    width = len(matrix[0])
+    for c in range(1, height):
+        if len(matrix[c]) != width:
+            print(f"Line {c} has {len(matrix[c])}, when it should have {width}")
+            return False
+
+    return True
+
+
+def verify_symmetry(matrix):
+    for line in range(len(matrix)):
+        for column in range(0, line):
+            if matrix[line][column] != matrix[column][line]:
+                return False
+    return True
 
 matrix_a = np.array([[1,2,2]
              ,[4,4,2]
