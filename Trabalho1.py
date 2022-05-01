@@ -8,7 +8,13 @@ matrix_a = np.array([[1,2,2]
 
 
 
-def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = 0, matrix_b = 0, TolM = 0.01):
+def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = 0, matrix_b = 0, tolM = 0.01):
+
+    if not op.verify_square(matrix_a):
+        print("ERROR")
+        
+    if matrix_b != 0 and not op.verify_square(matrix_b):
+        print("ERROR")
 
     if (ICOD == 1): # Decomposição LU   
         # Transformação de matrix_a em LU
@@ -22,13 +28,46 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = 0, matrix_b = 0, TolM =
                 for l in range(i+1, len(matrix_a)):
                     matrix_a[l][k] = matrix_a[l][k] - matrix_a[l][i] * matrix_a[i][k]
         
-        matrix_b = op.forward_substitution(matrix_a,matrix_b)
-        return op.backward_substitution(matrix_a,matrix_b)
+        matrix_b = op.forward_substitution(matrix_a, matrix_b, True)
+        return op.backward_substitution(matrix_a, matrix_b)
 
     elif (ICOD == 2): # Cholesky decomposition
         pass
     elif (ICOD == 3): # Jacobi Method
-        pass
+        if not op.verify_symmetry(matrix_a):
+            print("ERROR")
+        
+        pos, value = op.greater_jacobi(matrix_a)
+        matrix_x = np.identity(len(matrix_a))
+        while(value > tolM):
+            line = pos[0]
+            column = pos[1]
+
+            if matrix_a[line][line] == matrix_a[column][column]:
+                phi = np.pi()
+
+            else:
+                angle = 2 * matrix_a[line][column]/(matrix_a[line][line] - matrix_a[column][column])
+                phi = np.arctan(angle)/2
+            
+            matrix_p = np.identity(len(matrix_a))
+            
+            matrix_p[column][column] = np.cos(phi)
+            matrix_p[column][line] = (-1) * np.sin(phi)
+            matrix_p[line][column] = np.cos(phi)
+            matrix_p[line][line] = np.sin(phi)
+
+            # P(t) A P
+            matrix_a = np.matmul(matrix_a, matrix_p)
+            matrix_p = np.transpose(matrix_p) # p becomes it's transpose
+            matrix_a = np.matmul(matrix_p, matrix_a)
+            
+            matrix_p = np.transpose(matrix_p) # p goes back to it's innitial form
+
+            pos, value = op.greater_jacobi(matrix_a)
+
+
+
     elif (ICOD == 4): # Gauss-Seidel Method
         pass
 
