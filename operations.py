@@ -5,7 +5,7 @@ def forward_substitution(matrix_l, vector_b, triangle=False):
     for i in range(len(vector_b)):
         summ = 0
         for j in range(i):
-            summ += matrix_l[i][j] * y[j]
+            summ += matrix_l[i][j] * vector_y[j]
 
         if triangle:
             den = 1

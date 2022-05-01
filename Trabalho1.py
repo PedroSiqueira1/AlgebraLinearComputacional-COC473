@@ -7,12 +7,9 @@ matrix_a = np.array([[1,2,2]
 
 
 
-def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = 0, matrix_b = 0, tolM = 0.01):
+def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.01):
 
     if not op.verify_square(matrix_a):
-        print("ERROR")
-        
-    if matrix_b != 0 and not op.verify_square(matrix_b):
         print("ERROR")
 
     if (ICOD == 1): # Decomposição LU   
@@ -100,7 +97,7 @@ A = np.array([[1,0.2,0.4]
 B = np.array([0.6,-0.3,-0.6],float)
 
 
-
+print(solve_equation(matrix_a=A,matrix_b=B,ICOD=2))
 
 
 
