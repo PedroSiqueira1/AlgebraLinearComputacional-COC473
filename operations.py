@@ -6,13 +6,13 @@ def forward_substitution(matrix_l, vector_b, triangle=False):
         summ = 0
         for j in range(i):
             summ += matrix_l[i][j] * y[j]
-        
+
         if triangle:
             den = 1
         else:
             den = matrix_l[i][i]
 
-        vector_y[i] = (vector_b[i] - summ/den)
+        vector_y[i] = (vector_b[i] - summ)/den
 
     return vector_y
 
