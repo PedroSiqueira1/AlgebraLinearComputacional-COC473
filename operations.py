@@ -1,11 +1,14 @@
-﻿import numpy as np
+﻿
+﻿def forward_substitution(matrix_l, vector_b):
+    y = []
 
-
-def forward_substitution():
-    
-    return 0
-
-
+    for i in range(len(vector_b)):
+        summ = 0
+        for j in range(i):
+            summ += matrix_l[i][j] * y[j]
+         
+        y.append((vector_b[i] - summ)) #/matrix_l[i][i])
+    return y
 
 def backward_substitution(matrix_a,vector_b):
 
@@ -21,11 +24,11 @@ def backward_substitution(matrix_a,vector_b):
 
 print(backward_substitution(np.array([[1,2,2],[0,-4,-6],[0,0,-1]],float), np.array([3,-6,1],float)))
 
-def pivot(A, n):
-    for k in range(n, len(A)):
-        if A[k][n] != 0:
-            temp = A[n]
-            A[n] = A[k]
-            A[k] = temp
+def pivot(matrix_a, line):
+    for k in range(line, len(matrix_a)):
+        if matrix_a[k][line] != 0:
+            temp = matrix_a[line]
+            matrix_a[line] = matrix_a[k]
+            matrix_a[k] = temp
     
-    return A
+    return matrix_a

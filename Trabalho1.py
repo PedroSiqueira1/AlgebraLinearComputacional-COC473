@@ -54,41 +54,41 @@ class Matrix():
 
 
 
-A = np.array([[1,2,2]
+matrix_a = np.array([[1,2,2]
              ,[4,4,2]
              ,[4,6,4]],float)
 
-# In: A -> Any matrix
-# Out: The scalar of the matrix A 
-def gauss_elimination(A):
+# In: matrix_a -> Any matrix
+# Out: The scalar of the matrix matrix_a 
+def gauss_elimination(matrix_a):
     """Função que recebe uma matriz e retorna ela escalonada"""
 
-    for i in range(0, len(A)): 
-        for j in range(i+1, len(A)):
-            for k in range(i, len(A)): 
-                print((A[j][i] / A[i][i]), j,k)
+    for i in range(0, len(matrix_a)): 
+        for j in range(i+1, len(matrix_a)):
+            for k in range(i, len(matrix_a)): 
+                print((matrix_a[j][i] / matrix_a[i][i]), j,k)
 
-                A[j][k] = A[j][k] - (A[j][i] / A[i][i]) * A[i][k]
+                matrix_a[j][k] = matrix_a[j][k] - (matrix_a[j][i] / matrix_a[i][i]) * matrix_a[i][k]
                 
-    return A
+    return matrix_a
 
 
-# print(gauss_elimination(A))
+# print(gauss_elimination(matrix_a))
 def solve_equation(N = 0, ICOD = 1, IDET = 0, A = 0, B = 0, TolM = 0.01):
 
     if (ICOD == 1): # Decomposição LU   
-        # Transformação de A em LU
-        for i in range(0, len(A)):
-            for j in range(i+1, len(A)):
-                if A[i][i] == 0:
-                    A = op.pivot(A, i)
+        # Transformação de matrix_a em LU
+        for i in range(0, len(matrix_a)):
+            for j in range(i+1, len(matrix_a)):
+                if matrix_a[i][i] == 0:
+                    matrix_a = op.pivot(matrix_a, i)
 
-                A[j][i] = A[j][i] / A[i][i]
-            for k in range(i+1, len(A)):
-                for l in range(i+1, len(A)):
-                    A[l][k] = A[l][k] - A[l][i] * A[i][k]
+                matrix_a[j][i] = matrix_a[j][i] / matrix_a[i][i]
+            for k in range(i+1, len(matrix_a)):
+                for l in range(i+1, len(matrix_a)):
+                    matrix_a[l][k] = matrix_a[l][k] - matrix_a[l][i] * matrix_a[i][k]
         
-        return A
+        return matrix_a
 
     elif (ICOD == 2): # Cholesky decomposition
         pass
@@ -102,4 +102,4 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, A = 0, B = 0, TolM = 0.01):
     return 0
 
 print("\n --- \n")
-print(solve_equation(A=A))
+print(solve_equation(A=matrix_a))
