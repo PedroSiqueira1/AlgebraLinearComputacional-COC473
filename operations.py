@@ -1,17 +1,16 @@
-﻿
-﻿def forward_substitution(matrix_l, vector_b):
+﻿import numpy as np
+def forward_substitution(matrix_l, vector_b):
     y = []
 
     for i in range(len(vector_b)):
         summ = 0
         for j in range(i):
-            summ += matrix_l[i][j] * y[j]
+            summ += matrix_l[i][j] * y[j]   
          
         y.append((vector_b[i] - summ)) #/matrix_l[i][i])
     return y
 
 def backward_substitution(matrix_a,vector_b):
-
     number_of_rows = len(matrix_a)
     vector_x = np.zeros(len(vector_b),float)
     vector_x[-1] = vector_b[-1] / matrix_a[-1][-1]
