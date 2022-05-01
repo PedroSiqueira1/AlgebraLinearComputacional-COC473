@@ -2,45 +2,9 @@ import numpy as np
 
 import operations as op
 
-def verify_matrix(matrix): # verifies if the created matrix
-    height = len(matrix)
-    if height == 0 or len(matrix[0]) == 0:
-        print("Empty matrix")
-        return False
-    
-    width = len(matrix[0])
-    for c in range(1, height):
-        if len(matrix[c]) != width:
-            print(f"Line {c} has {len(matrix[c])}, when it should have {width}")
-            return False
-
-    return True
-
-
-def verify_symmetry(matrix):
-    for line in range(len(matrix)):
-        for column in range(0, line):
-            if matrix[line][column] != matrix[column][line]:
-                return False
-    return True
-
 matrix_a = np.array([[1,2,2]
              ,[4,4,2]
              ,[4,6,4]],float)
-
-# In: matrix_a -> Any matrix
-# Out: The scalar of the matrix matrix_a 
-def gauss_elimination(matrix_a):
-    """Função que recebe uma matriz e retorna ela escalonada"""
-
-    for i in range(0, len(matrix_a)): 
-        for j in range(i+1, len(matrix_a)):
-            for k in range(i, len(matrix_a)): 
-                print((matrix_a[j][i] / matrix_a[i][i]), j,k)
-
-                matrix_a[j][k] = matrix_a[j][k] - (matrix_a[j][i] / matrix_a[i][i]) * matrix_a[i][k]
-                
-    return matrix_a
 
 
 # print(gauss_elimination(matrix_a))
