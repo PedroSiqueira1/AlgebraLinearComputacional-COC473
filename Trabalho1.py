@@ -1,5 +1,7 @@
 import numpy as np
 
+import operations as op
+
 class Matrix():
     matrix = None
     scope = None    # 'A', 'L' or 'U'
@@ -43,11 +45,11 @@ class Matrix():
 
         elif self.scope == 'U':
             if column > line:
+                return 0
 
         elif self.scope == 'L':
-            
+            return 0
 
-    def valid(self):
         
 
 
@@ -69,24 +71,24 @@ def gauss_elimination(A):
                 A[j][k] = A[j][k] - (A[j][i] / A[i][i]) * A[i][k]
                 
     return A
-print(gauss_elimination(A))
-def solve_equation(N = 0, ICOD = 1, IDET = 0, A = 0, B = 0, TolM = 0):
+
+
+# print(gauss_elimination(A))
+def solve_equation(N = 0, ICOD = 1, IDET = 0, A = 0, B = 0, TolM = 0.01):
 
     if (ICOD == 1): # Decomposição LU   
-
-        L = np.identity() # Define L como matriz identidade
-
-        # Transformação de A em U
-        
+        # Transformação de A em LU
         for i in range(0, len(A)):
             for j in range(i+1, len(A)):
+                if A[i][i] == 0:
+                    A = op.pivot(A, i)
+
                 A[j][i] = A[j][i] / A[i][i]
             for k in range(i+1, len(A)):
                 for l in range(i+1, len(A)):
                     A[l][k] = A[l][k] - A[l][i] * A[i][k]
         
-
-        return L , U
+        return A
 
     elif (ICOD == 2): # Cholesky decomposition
         pass
@@ -99,3 +101,5 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, A = 0, B = 0, TolM = 0):
         print("Invalid ICOD")
     return 0
 
+print("\n --- \n")
+print(solve_equation(A=A))
