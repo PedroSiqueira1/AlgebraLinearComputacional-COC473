@@ -47,7 +47,7 @@ def gauss_elimination(matrix_a):
 
 
 # VERIFY
-def verify_matrix(matrix): # verifies if the created matrix
+def verify_square(matrix): # verifies if the created matrix
     height = len(matrix)
     if height == 0 or len(matrix[0]) == 0:
         print("Empty matrix")
