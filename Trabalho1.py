@@ -7,7 +7,7 @@ matrix_a = np.array([[1,2,2]
 
 
 
-def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = 0, matrix_b = 0, tolM = 0.01):
+def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.001):
 
     if not op.verify_square(matrix_a):
         print("ERROR")
@@ -101,8 +101,25 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = 0, matrix_b = 0, tolM =
         return matrix_a
 
     if (ICOD == 4): # Gauss-Seidel Method
-        pass
-        return True
+        x_old = np.full(len(matrix_a),1.0) # Vector full of 1
+        x_new = np.full(len(matrix_a),2.0) # Vector full of 2
+        iter = 0
+        while True:
+            iter +=1
+            if iter >= 10000: # Código interrompe se não convergir em 10000 iterações
+                break
+            for i in range(0,len(matrix_a)):
+                summ = 0    
+                for j in range(0,len(matrix_a)):
+                    if j != i:
+                        summ += (matrix_a[i][j]) * (x_new[j])
+                x_new[i] = (matrix_b[i] - summ)/matrix_a[i][i]
+
+            if (np.linalg.norm(x_new - x_old)/np.linalg.norm(x_new)) <= tolM: # Código interrompe se o resíduo for menor que a tolerância escolhida.
+                break
+            x_old = x_new.copy()
+            
+        return x_new
     
     print("Invalid ICOD")
     return 0
@@ -120,12 +137,6 @@ B = np.array([1.2, 1.7, 1.5],float)
 
 print(solve_equation(ICOD=3, matrix_a=A, matrix_b=B))
 '''
-
-
-
-
-
-
 
 
 
