@@ -52,28 +52,39 @@ def gauss_elimination(matrix_a):
     return matrix_a
 
 
+# Jacobi
 
 def greater_jacobi(matrix):
     greater_value = 0
     for line in range(1, len(matrix)):
         for column in range(0, line):
-            value = np.mod(matrix[line][column])
+            value = abs(matrix[line][column])
             if value > greater_value:
                 greater_value = value
                 greater_pos = (line, column)
     return greater_pos, greater_value
 
+
+def inverse_diagonal(matrix):
+    for c in range(len(matrix)):
+        if matrix[c][c] == 0:
+            print("ERROR - revert_diagonal - det = 0")
+            return matrix
+
+        matrix[c][c] = 1/matrix[c][c]
+    return matrix
+    
 # ----- VERIFY -----
 def verify_square(matrix): # verifies if the matrix is square
     height = len(matrix)
     if height == 0 or len(matrix[0]) == 0:
-        print("Empty matrix")
+        print("ERROR - verify_square - empty matrix")
         return False
     
     width = len(matrix[0])
     for c in range(1, height):
         if len(matrix[c]) != width:
-            print(f"Line {c} has {len(matrix[c])}, when it should have {width}")
+            print(f"ERROR - verify_square - Line {c} has {len(matrix[c])}, when it should have {width}")
             return False
 
     return True
@@ -83,5 +94,6 @@ def verify_symmetry(matrix):
     for line in range(1, len(matrix)):
         for column in range(0, line):
             if matrix[line][column] != matrix[column][line]:
+                # Not symmetric
                 return False
     return True
