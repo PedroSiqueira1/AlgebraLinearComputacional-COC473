@@ -27,7 +27,7 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, 
         matrix_b = op.forward_substitution(matrix_a, matrix_b, True)
         return op.backward_substitution(matrix_a, matrix_b)
 
-    elif (ICOD == 2): # Cholesky decomposition
+    if (ICOD == 2): # Cholesky decomposition
         for i in range(0,len(matrix_a)):
             summ = 0
             for k in range(0,i):
@@ -42,7 +42,6 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, 
 
         matrix_b = op.forward_substitution(matrix_a,matrix_b)
         return op.backward_substitution(matrix_a,matrix_b)
-    
     
     if (ICOD == 3): # Jacobi Method
         if not op.verify_symmetry(matrix_a):
@@ -101,7 +100,7 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, 
 
         return matrix_a
 
-    elif (ICOD == 4): # Gauss-Seidel Method
+    if (ICOD == 4): # Gauss-Seidel Method
         x_old = np.full(len(matrix_a),1.0) # Vector full of 1
         x_new = np.full(len(matrix_a),2.0) # Vector full of 2
         iter = 0
@@ -124,26 +123,18 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, 
             x_old = x_new.copy()
             
         return x_new, iter, residuo
-    else:
-        print("Invalid ICOD")
+    
+    print("Invalid ICOD")
     return 0
 
-A = np.array([[1,0.2,0]
-   ,[0.2,1,0.5]
-   ,[0,0.5,1]],float)
-B = np.array([1.2,1.7,1.5],float)
 '''
-print(solve_equation(matrix_a=A,matrix_b=B))
+A = np.array([[1, 0.2, 0]
+            ,[0.2, 1, 0.5]
+            ,[0, 0.5, 1]],float)
+B = np.array([1.2, 1.7, 1.5],float)
 
-A = np.array([[3,-1,-1]
-            ,[-1,3,-1]
-            ,[-1,-1,3]],float)
-B = np.array([1,2,1],float)
+print(solve_equation(ICOD=3, matrix_a=A, matrix_b=B))
 '''
-
-print(solve_equation(matrix_a=A,matrix_b=B,ICOD=3))
-
-
 
 
 
