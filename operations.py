@@ -57,12 +57,21 @@ def greater_jacobi(matrix):
     greater_value = 0
     for line in range(1, len(matrix)):
         for column in range(0, line):
-            value = np.mod(matrix[line][column])
+            value = abs(matrix[line][column])
             if value > greater_value:
                 greater_value = value
                 greater_pos = (line, column)
     return greater_pos, greater_value
 
+
+def inverse_diagonal(matrix):
+    for c in range(len(matrix)):
+        if matrix[c][c] == 0:
+            print("ERROR - revert_diagonal - det = 0")
+            return matrix
+
+        matrix[c][c] = 1/matrix[c][c]
+    return matrix
 # ----- VERIFY -----
 def verify_square(matrix): # verifies if the matrix is square
     height = len(matrix)
