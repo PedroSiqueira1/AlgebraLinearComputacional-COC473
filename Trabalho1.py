@@ -87,16 +87,12 @@ def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, 
 
         # Considerando: AX = B
         # X = V A(-1) V(t) B
-        print("\n ------ \n")
-        print("V", matrix_v)
-        print("A", matrix_a)
-        print("B", matrix_b)
 
-        matrix_a = op.inverse_diagonal(matrix_a) # A(-1) <= A
-        matrix_a = np.matmul(matrix_v, matrix_a) # V A(-1)
+        matrix_a = op.inverse_diagonal(matrix_a) # A(-1)
+        matrix_a = np.matmul(matrix_v, matrix_a) # V  A(-1)
         matrix_v = np.transpose(matrix_v) # V(t)
-        matrix_a = np.matmul(matrix_a, matrix_v) # V A(-1) V(t)
-        matrix_a = np.matmul(matrix_a, matrix_b) # V A(-1) V(t) B
+        matrix_a = np.matmul(matrix_a, matrix_v) # [V A(-1)]  V(t)
+        matrix_a = np.matmul(matrix_a, matrix_b) # [V A(-1) V(t)]  B
 
         return matrix_a
 
