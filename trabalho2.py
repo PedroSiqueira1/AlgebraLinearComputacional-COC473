@@ -80,4 +80,4 @@ A = np.array([[1,0.2,0]
    ,[0.2,1,0.5]
    ,[0,0.5,1]],float)
 
-print(main(matrix_a=A, ICOD=2))
+# print(main(matrix_a=A, ICOD=2))

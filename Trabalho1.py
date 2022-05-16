@@ -7,7 +7,7 @@ matrix_a = np.array([[1,2,2]
 
 
 
-def solve_equation(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.001):
+def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.001):
 
     if not op.verify_square(matrix_a):
         print("ERROR")
@@ -129,7 +129,7 @@ A = np.array([[1, 0.2, 0]
             ,[0, 0.5, 1]],float)
 B = np.array([1.2, 1.7, 1.5],float)
 
-print(solve_equation(ICOD=3, matrix_a=A, matrix_b=B))
+print(main(ICOD=3, matrix_a=A, matrix_b=B))
 '''
 
 
