@@ -1,0 +1,5 @@
+trabalho: 1
+N: 3
+ICOD: 1
+IDET: 0
+tolM: 0.001
