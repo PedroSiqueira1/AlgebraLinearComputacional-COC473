@@ -21,19 +21,28 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
         
         matrix_b = op.forward_substitution(matrix_a, matrix_b, True)
 
+        matrix_b = op.backward_substitution(matrix_a, matrix_b)
+
+        answer = {"vectorB": matrix_b}
 
         if(IDET > 0):
             determinant = 1
             for i in range(0,len(matrix_a)):
                 determinant *= matrix_a[i][i]
+            
+            answer["determinant"] = determinant
 
-        return op.backward_substitution(matrix_a, matrix_b), determinant
+        return answer
 
     if (ICOD == 2): # Cholesky decomposition
         for i in range(0,len(matrix_a)):
             summ = 0
             for k in range(0,i):
                 summ += (matrix_a[i][k])**2
+
+            if (matrix_a[i][i] - summ) < 0: # verification
+                print("Invalid Matrix for Cholesky method")
+
             matrix_a[i][i] = np.sqrt(matrix_a[i][i] - summ)
             for j in range(i+1,len(matrix_a)):
                 summ = 0
@@ -43,22 +52,28 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
                 matrix_a[i][j] = matrix_a[j][i]
 
         matrix_b = op.forward_substitution(matrix_a,matrix_b)
-
+        matrix_b = op.backward_substitution(matrix_a,matrix_b)
+        
+        answer = {"vectorB": matrix_b}
+        
         if(IDET > 0):
             determinant = 1
             for i in range(0,len(matrix_a)):
                 determinant *= matrix_a[i][i]
             determinant = determinant**2
 
-        return op.backward_substitution(matrix_a,matrix_b), determinant
+            answer["determinant"] = determinant
+
+        return answer
+        
     
     if (ICOD == 3): # Jacobi Method
         if not op.verify_symmetry(matrix_a):
-            print("ERROR")
-            return False
+            print("ERROR - Matrix not symmetric")
+            return {"log": "ERROR - Matrix not symmetric"}
         
-        pos, value = op.greater_jacobi(matrix_a)
         matrix_v = np.identity(len(matrix_a))
+        pos, value = op.greater_jacobi(matrix_a)
         while(value > tolM):
             line = pos[0]
             column = pos[1]
@@ -80,9 +95,9 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
             matrix_p[line][line] = np.cos(phi)
 
             # A' = P(t) A P
-            matrix_a = np.matmul(matrix_a, matrix_p)
+            matrix_a = np.matmul(matrix_a, matrix_p) # A P
             matrix_p = np.transpose(matrix_p) # P -> P(t)
-            matrix_a = np.matmul(matrix_p, matrix_a)
+            matrix_a = np.matmul(matrix_p, matrix_a) # P(t) [A P]
             
             matrix_p = np.transpose(matrix_p) # P(t) -> P
 
@@ -101,9 +116,14 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
         matrix_a = np.matmul(matrix_v, matrix_a) # V  A(-1)
         matrix_v = np.transpose(matrix_v) # V(t)
         matrix_a = np.matmul(matrix_a, matrix_v) # [V A(-1)]  V(t)
-        matrix_a = np.matmul(matrix_a, matrix_b) # [V A(-1) V(t)]  B
+        matrix_v = np.matmul(matrix_a, matrix_b) # [V A(-1) V(t)]  B
 
-        return matrix_a
+        answer = {"vectorB": matrix_v}
+        
+        if(IDET > 0):
+            answer["determinant"] = "Não é possivel calcular o determinante para este método"
+
+        return answer
 
     if (ICOD == 4): # Gauss-Seidel Method
         x_old = np.full(len(matrix_a),1.0) # Vector full of 1
@@ -127,7 +147,7 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
                 break
             x_old = x_new.copy()
             
-        return x_new, iter, residuo
+        return {"vectorB": x_new, "iterations": iter, "residuo": residuo}
     
     print("Invalid ICOD")
     return 0

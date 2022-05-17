@@ -19,6 +19,7 @@ def file2matrix(matrix_file, size):
         matrix.append(matrix_line)
     return matrix
 
+
 def file2vector(vector_file, size):
     vector = []
     line_c = 0
@@ -26,6 +27,7 @@ def file2vector(vector_file, size):
     for line in vector_file:
         vector.append(float(line))
     return vector
+
 
 def main():
 
