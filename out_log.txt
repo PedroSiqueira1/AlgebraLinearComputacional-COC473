@@ -1,1 +1,1 @@
-File 'matrixA' not found
+ERROR - Matrix diagonal not dominant
