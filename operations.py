@@ -73,6 +73,29 @@ def inverse_diagonal(matrix):
 
         matrix[c][c] = 1/matrix[c][c]
     return matrix
+
+
+def dominant_diagonal(matrix):
+    size = len(matrix)
+    for c in range(size): # diagonal
+        summ = 0
+        
+        for i in range(size): # summ of line
+            summ += abs(matrix[c][i])
+        
+        if summ >= 2*abs(matrix[c][c]):
+            print("dominant_diagonal: Diagonal not dominant, line:", c)
+            return False
+
+        summ = 0
+        for i in range(size): # summ of column
+            summ += matrix[i][c]
+
+        if summ >= 2*abs(matrix[c][c]):
+            print("dominant_diagonal: Diagonal not dominant, column:", c)
+            return False
+
+    return True
     
 # ----- VERIFY -----
 def verify_square(matrix): # verifies if the matrix is square
