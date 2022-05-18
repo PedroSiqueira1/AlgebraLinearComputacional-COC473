@@ -1,26 +1,20 @@
-﻿import trabalho1 as t1
+﻿import Trabalho1 as t1
 import trabalho2 as t2
+import trabalho3 as t3
 
 
-def file2matrix(matrix_file, size):
+def file2matrix(matrix_file):
     matrix = []
     line_c = 0
     for line in matrix_file:
-        line_c += 1
-        if line_c > size:
-            break
         row = line.split(" ")
-
-        if len(row) < size: # Fill with 0 if necessary
-            missing = int(size)-len(row)
-            row.extend([0]*missing)
         
         matrix_line = [float(x) for x in row]
         matrix.append(matrix_line)
     return matrix
 
 
-def file2vector(vector_file, size):
+def file2vector(vector_file):
     vector = []
     line_c = 0
 
@@ -62,20 +56,20 @@ def main():
         output_file.close()
         return False
     
-    matrix_a = file2matrix(matrixA_file, N)
+    matrix_a = file2matrix(matrixA_file)
     matrixA_file.close()
     
     try:
         vectorB_file = open("vectorB.txt", "r")
-        vectorb_exists = True
     except:
-        vector_b = None
-        vectorb_exists = False
-        print("File 'vectorB' not found")
+        print("File 'matrixB' not found")
+        output_file = open("out_log.txt", "w")
+        output_file.write("File 'matrixB' not found")
+        output_file.close()
+        return False
     
-    if vectorb_exists:
-        vector_b = file2vector(vectorB_file, N)
-        vectorB_file.close()
+    vector_b = file2vector(vectorB_file)
+    matrixA_file.close()
 
 
 
@@ -83,10 +77,21 @@ def main():
         result = t1.main(N=N, ICOD=ICOD, IDET=IDET, matrix_a=matrix_a, matrix_b=vector_b, tolM=tolM)
     
     elif trabalho == 2:
-        result = t2.main(N=N, ICOD=ICOD, IDET=IDET, matrix_a=matrix_a, tolM=tolM)
+        result = t2.main(n=N, ICOD=ICOD, IDET=IDET, matrix_a=matrix_a, tolM=tolM)
 
     elif trabalho == 3:
-        pass
+        try:
+            points_file = open("points.txt", "r")
+        except:
+            print("File 'points.txt' not found")
+            output_file = open("out_log.txt", "w")
+            output_file.write("File 'points.txt' not found")
+            output_file.close()
+            return False
+        
+        points = file2matrix(points_file)
+
+        result = t3.main(points)
 
     else:
         output_file = open("out_log.txt", "w")
@@ -94,14 +99,15 @@ def main():
         output_file.close()
         return False
 
-    print(result)
-    output_file = open("out_vectorX.txt", "w")
-    output_file.write(str(result))
-    output_file.close()
-
-    # print(trabalho_n, icod)
-
     input_file.close()
+
+    print("Files:")
+    for key in result:
+        print(key)
+        output_file = open(f"out_{key}.txt", "w")
+        output_file.write(str(result[key]))
+        output_file.close()
+
     
     return True
 
