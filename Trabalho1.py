@@ -72,9 +72,15 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
             print("ERROR - Matrix not symmetric")
             return {"log": "ERROR - Matrix not symmetric"}
         
+        if not op.dominant_diagonal(matrix_a):
+            print("ERROR - Matrix diagonal not dominant")
+            return {"log": "ERROR - Matrix diagonal not dominant"}
+            
+        iter = 0
         matrix_v = np.identity(len(matrix_a))
         pos, value = op.greater_jacobi(matrix_a)
-        while(value > tolM):
+        while(value > tolM and iter < 100):
+            iter += 1
             line = pos[0]
             column = pos[1]
 
@@ -105,7 +111,7 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
             matrix_v = np.matmul(matrix_v , matrix_p)
 
             pos, value = op.greater_jacobi(matrix_a)
-
+            print(value)
         # matrix_a -> Autovalores (na diag princ)
         # matrix_v -> Autovetores (nas colunas)
 
