@@ -21,7 +21,7 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
             r = abs(x_max - lamb)/abs(x_max)
             lamb = x_max
         
-        return lamb, vector_x, iteracoes
+        return {"lamb": lamb, "vectorX": vector_x, "iterations": iteracoes}
 
     if ICOD == 2: # Jacobi-Method
         if not op.verify_symmetry(matrix_a):
@@ -71,7 +71,7 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
         print("V", matrix_v)
         print("A", matrix_a)
 
-        return matrix_a, matrix_v, iteracoes
+        return {"eigenvalues" :matrix_a, "autovectors": matrix_v, "iterations": iteracoes}
     
     print("Erro: ICOD inválido")
     return False

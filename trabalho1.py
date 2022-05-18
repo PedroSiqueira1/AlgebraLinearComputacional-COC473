@@ -124,7 +124,7 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
         matrix_a = np.matmul(matrix_a, matrix_v) # [V A(-1)]  V(t)
         matrix_v = np.matmul(matrix_a, matrix_b) # [V A(-1) V(t)]  B
 
-        answer = {"vectorX": matrix_v}
+        answer = {"vectorX": matrix_v, "iterations": iter}
         
         if(IDET > 0):
             answer["determinant"] = "Não é possivel calcular o determinante para este método"
