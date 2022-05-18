@@ -20,9 +20,37 @@ def main(ICOD=1, N = 0,  points=None, coordinate_x=None):
 
 
     if ICOD == 2: # Regression 
- 
-        return False
+
+        A = []
+        C = []
+
+        sum_ones = 0 
+        sum_x = 0
+        sum_squarex = 0
+        sum_y = 0
+        sum_xy = 0
+        for i in range(len(points)):
+            sum_ones += 1
+            sum_x += points[i][0]
+            sum_squarex += (points[i][0])**2
+            sum_y += (points[i][1])
+            sum_xy += (points[i][0]) * (points[i][1])
+
+        A.append([sum_ones, sum_x])
+        A.append([sum_x, sum_squarex]) # A is symmetric
+        
+
+        C.append(sum_y)
+        C.append(sum_xy) 
+
+        B = np.matmul(np.linalg.inv(A), C) # B = (A^-1)*C 
+
+        b0 = B[0]
+        b1 = B[1]
+
+        coordinate_y = b0 + b1 * coordinate_x
+        return coordinate_y
 
 
 
-print(main(ICOD = 1, points=[[-2,-27],[0,1],[1,0]], coordinate_x=2))
+print(main(ICOD = 2, points=[[1,2],[2,3.5],[3,6.5]], coordinate_x=3))
