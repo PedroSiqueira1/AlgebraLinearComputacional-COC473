@@ -70,7 +70,7 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
             eigenvalues.append(matrix_a[c][c])
             determinant *= matrix_a[c][c]
 
-        return {"eigenvalues": eigenvalues, "eigenvectors": matrix_v, "iterations": iteracoes}
+        return {"eigenvalues": eigenvalues, "eigenvectors": matrix_v, "iterations": iteracoes, "determinant": determinant}
     
     print("Erro: ICOD inválido")
     return {"log": "ICOD inválido"}
