@@ -72,6 +72,7 @@ def main():
     matrixA_file.close()
 
 
+    N = len(matrix_a)
 
     if trabalho == 1:
         result = t1.main(N=N, ICOD=ICOD, IDET=IDET, matrix_a=matrix_a, matrix_b=vector_b, tolM=tolM)

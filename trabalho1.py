@@ -5,6 +5,7 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
     determinant = None
     if not op.verify_square(matrix_a):
         print("ERROR")
+        return {"log": "Matriz A não é quadrada"}
 
     if (ICOD == 1): # Decomposição LU
 
@@ -35,6 +36,9 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
         return answer
 
     if (ICOD == 2): # Cholesky decomposition
+        if not op.verify_symmetry(matrix_a):
+            return {"log": "Matriz A não é simétrica"}
+
         for i in range(0,len(matrix_a)):
             summ = 0
             for k in range(0,i):
@@ -42,6 +46,8 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
 
             if (matrix_a[i][i] - summ) < 0: # verification
                 print("Invalid Matrix for Cholesky method")
+                return {"log": "Matriz A não é positiva definida"}
+
 
             matrix_a[i][i] = np.sqrt(matrix_a[i][i] - summ)
             for j in range(i+1,len(matrix_a)):
@@ -68,63 +74,33 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
         
     
     if (ICOD == 3): # Jacobi Method
-        if not op.verify_symmetry(matrix_a):
-            print("ERROR - Matrix not symmetric")
-            return {"log": "ERROR - Matrix not symmetric"}
-        
-        if not op.dominant_diagonal(matrix_a):
-            print("ERROR - Matrix diagonal not dominant")
-            return {"log": "ERROR - Matrix diagonal not dominant"}
-            
+        print("inputs:", matrix_a, matrix_b)
+        vector_x = np.full(N, 1.0)
+        new_vector_x = np.full(N, 1.0)
         iter = 0
-        matrix_v = np.identity(len(matrix_a))
-        pos, value = op.greater_jacobi(matrix_a)
-        while(value > tolM and iter < 100):
+        residuo = 100
+        while(residuo > tolM and iter < 10000):
             iter += 1
-            line = pos[0]
-            column = pos[1]
+            for i in range(N):
+                summ = 0
+                for j in range(N):
+                    if j != i:
+                        summ += matrix_a[i][j] * vector_x[j]
 
-            # Define phi
-            if matrix_a[line][line] == matrix_a[column][column]:
-                phi = np.pi/4
-
-            else:
-                tan = 2 * matrix_a[line][column]/(matrix_a[line][line] - matrix_a[column][column])
-                phi = np.arctan(tan)/2
+                new_vector_x[i] = (matrix_b[i] - summ)/matrix_a[i][i]
             
-            # Define matrix P
-            matrix_p = np.identity(len(matrix_a))
-            
-            matrix_p[column][column] = np.cos(phi)
-            matrix_p[column][line] = (-1) * np.sin(phi)
-            matrix_p[line][column] = np.sin(phi)
-            matrix_p[line][line] = np.cos(phi)
+            # calculating residuo - R = |X' - X| / |X'|
+            abs_vec_x = pre_residuo = 0
+            for c in range(N):
+                pre_residuo += (new_vector_x[c] - vector_x[c])**2 # |X' - X|
+                abs_vec_x += new_vector_x[c]**2 # |X'|
 
-            # A' = P(t) A P
-            matrix_a = np.matmul(matrix_a, matrix_p) # A P
-            matrix_p = np.transpose(matrix_p) # P -> P(t)
-            matrix_a = np.matmul(matrix_p, matrix_a) # P(t) [A P]
-            
-            matrix_p = np.transpose(matrix_p) # P(t) -> P
+            residuo = np.sqrt(pre_residuo/abs_vec_x)
 
-            # V' = V P
-            matrix_v = np.matmul(matrix_v , matrix_p)
+            vector_x = new_vector_x.copy()
+        
 
-            pos, value = op.greater_jacobi(matrix_a)
-            print(value)
-        # matrix_a -> Autovalores (na diag princ)
-        # matrix_v -> Autovetores (nas colunas)
-
-        # Considerando: AX = B
-        # X = V A(-1) V(t) B
-
-        matrix_a = op.inverse_diagonal(matrix_a) # A(-1)
-        matrix_a = np.matmul(matrix_v, matrix_a) # V  A(-1)
-        matrix_v = np.transpose(matrix_v) # V(t)
-        matrix_a = np.matmul(matrix_a, matrix_v) # [V A(-1)]  V(t)
-        matrix_v = np.matmul(matrix_a, matrix_b) # [V A(-1) V(t)]  B
-
-        answer = {"vectorX": matrix_v, "iterations": iter}
+        answer = {"vectorX": vector_x, "iterations": iter}
         
         if(IDET > 0):
             answer["determinant"] = "Não é possivel calcular o determinante para este método"
