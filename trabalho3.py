@@ -50,4 +50,3 @@ def main(ICOD=1, N = 0,  points=None, coordinate_x=None):
 
         coordinate_y = b0 + b1 * coordinate_x
         return {"coordinateY": coordinate_y}
-
