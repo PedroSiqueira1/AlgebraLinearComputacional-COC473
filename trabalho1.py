@@ -74,7 +74,14 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
         
     
     if (ICOD == 3): # Jacobi Method
-        print("inputs:", matrix_a, matrix_b)
+        if not op.verify_symmetry(matrix_a):
+            print("ERROR - Matrix not symmetric")
+            return {"log": "ERROR - Matrix not symmetric"}
+
+        if not op.dominant_diagonal(matrix_a):
+            print("ERROR - Matrix diagonal not dominant")
+            return {"log": "ERROR - Matrix diagonal not dominant"}
+
         vector_x = np.full(N, 1.0)
         new_vector_x = np.full(N, 1.0)
         iter = 0
