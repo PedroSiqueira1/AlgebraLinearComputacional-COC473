@@ -21,16 +21,17 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
             r = abs(x_max - lamb)/abs(x_max)
             lamb = x_max
         
-        return lamb, vector_x, iteracoes
+        return {"eigenvalues": lamb, "autovectors": vector_x, "iterations": iteracoes}
 
     if ICOD == 2: # Jacobi-Method
         if not op.verify_symmetry(matrix_a):
-            print("ERROR")
-            return False
+            print("ERROR - Matriz A não é simétrica")
+            return {"log": "Matriz A não é simétrica"}
+
         pos, value = op.greater_jacobi(matrix_a)
         matrix_v = np.identity(len(matrix_a))
         iteracoes = 0
-        while(value > tolM):
+        while(value > tolM and iteracoes < 10000):
             iteracoes += 1
             line = pos[0]
             column = pos[1]
@@ -52,9 +53,9 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
             matrix_p[line][line] = np.cos(phi)
 
             # A' = P(t) A P
-            matrix_a = np.matmul(matrix_a, matrix_p)
+            matrix_a = np.matmul(matrix_a, matrix_p) # A P
             matrix_p = np.transpose(matrix_p) # P -> P(t)
-            matrix_a = np.matmul(matrix_p, matrix_a)
+            matrix_a = np.matmul(matrix_p, matrix_a) #  P(t) [A P]
             
             matrix_p = np.transpose(matrix_p) # P(t) -> P
 
@@ -62,19 +63,15 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
             matrix_v = np.matmul(matrix_v , matrix_p)
 
             pos, value = op.greater_jacobi(matrix_a)
-            
 
-        # matrix_a -> Autovalores (na diag princ)
-        # matrix_v -> Autovetores (nas colunas)
+        eigenvalues = []
+        for c in range(len(matrix_a)):
+            eigenvalues.append(matrix_a[c][c])
 
-        print("\n ------ \n")
-        print("V", matrix_v)
-        print("A", matrix_a)
-
-        return matrix_a, matrix_v, iteracoes
+        return {"eigenvalues": eigenvalues, "autovectors": matrix_v, "iterations": iteracoes}
     
     print("Erro: ICOD inválido")
-    return False
+    return {"log": "ICOD inválido"}
 
 A = np.array([[1,0.2,0]
    ,[0.2,1,0.5]

@@ -16,7 +16,7 @@ def main(ICOD=1, N = 0,  points=None, coordinate_x=None):
                     denominator*= (points[i][0] - points[k][0]) # Product of (x1 - x_k)
             coordinate_y += (numerator/denominator) * points[i][1] # f(x) = Φ1 * (y1) + ... + Φn * (yn) 
 
-        return coordinate_y
+        return {"coordinateY": coordinate_y}
 
 
     if ICOD == 2: # Regression 
@@ -49,7 +49,7 @@ def main(ICOD=1, N = 0,  points=None, coordinate_x=None):
         b1 = B[1]
 
         coordinate_y = b0 + b1 * coordinate_x
-        return coordinate_y
+        return {"coordinateY": coordinate_y}
 
 
 
