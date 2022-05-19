@@ -43,7 +43,7 @@ def main(ICOD=1, N = 0,  points=None, coordinate_x=None):
         C.append(sum_y)
         C.append(sum_xy) 
 
-        B = np.matmul(np.linalg.inv(A), C) # B = (A^-1)*C 
+        B = op.lu(A,C)
 
         b0 = B[0]
         b1 = B[1]

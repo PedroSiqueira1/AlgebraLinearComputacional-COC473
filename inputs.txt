@@ -1,6 +1,12 @@
 trabalho: 3
 N: 10
+<<<<<<< HEAD
+ICOD: 2
+IDET: 0
+tolM: 0.001
+=======
 ICOD: 1
 IDET: 1
 tolM: 0.001
 coordinate_x: 4
+>>>>>>> 583921cd5b25879531c45ab51f4452a8897d5b09
