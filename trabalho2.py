@@ -23,8 +23,12 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
 
             r = abs(x_max - lamb)/abs(x_max)
             lamb = x_max
+
+        answer = {"eigenvalues": lamb, "eigenvectors": vector_x, "iterations": iteracoes}
+        if(IDET > 0):
+            answer["determinant"] = "Não é possivel calcular o determinante para este método"
         
-        return {"eigenvalues": lamb, "eigenvectors": vector_x, "iterations": iteracoes}
+        return answer
 
     if ICOD == 2: # Jacobi-Method
         if not op.verify_symmetry(matrix_a):
@@ -72,7 +76,7 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
 
         for c in range(len(matrix_a)):
             eigenvalues.append(matrix_a[c][c])
-            
+
         answer = {"eigenvalues": eigenvalues, "eigenvectors": matrix_v, "iterations": iteracoes}
 
         if(IDET > 0):
