@@ -51,6 +51,3 @@ def main(ICOD=1, N = 0,  points=None, coordinate_x=None):
         coordinate_y = b0 + b1 * coordinate_x
         return {"coordinateY": coordinate_y}
 
-
-
-print(main(ICOD = 2, points=[[1,2],[2,3.5],[3,6.5]], coordinate_x=3))
