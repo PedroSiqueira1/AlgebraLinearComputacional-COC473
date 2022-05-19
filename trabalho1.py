@@ -135,13 +135,6 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
     return 0
 
 
-# A = np.array([[1.0, 0.2, 0.4]
-#             ,[0.2, 1.0, 0.5]
-#             ,[0.4, 0.5, 1.0]],float)
-# B = np.array([0.6, -0.3, -0.6],float)
-
-# print(solve_equation(ICOD=2, IDET = 1, matrix_a=A, matrix_b=B))
-
 
 
 

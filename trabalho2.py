@@ -21,7 +21,7 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
             r = abs(x_max - lamb)/abs(x_max)
             lamb = x_max
         
-        return {"eigenvalues": lamb, "autovectors": vector_x, "iterations": iteracoes}
+        return {"eigenvalues": lamb, "eigenvectors": vector_x, "iterations": iteracoes}
 
     if ICOD == 2: # Jacobi-Method
         if not op.verify_symmetry(matrix_a):
@@ -64,17 +64,14 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
 
             pos, value = op.greater_jacobi(matrix_a)
 
+        determinant = 1
         eigenvalues = []
         for c in range(len(matrix_a)):
             eigenvalues.append(matrix_a[c][c])
+            determinant *= matrix_a[c][c]
 
-        return {"eigenvalues": eigenvalues, "autovectors": matrix_v, "iterations": iteracoes}
+        return {"eigenvalues": eigenvalues, "eigenvectors": matrix_v, "iterations": iteracoes, "determinant": determinant}
     
     print("Erro: ICOD inválido")
     return {"log": "ICOD inválido"}
 
-A = np.array([[1,0.2,0]
-   ,[0.2,1,0.5]
-   ,[0,0.5,1]],float)
-
-# print(main(matrix_a=A, ICOD=2))
