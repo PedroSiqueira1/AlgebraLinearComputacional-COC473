@@ -1,1 +1,1 @@
-File 'points.txt' not found
+ERROR - Matrix diagonal not dominant

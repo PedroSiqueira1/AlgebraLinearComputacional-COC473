@@ -118,7 +118,7 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
         residuo = []
         while True:
             iter +=1
-            if iter >= 10000: # Código interrompe se não convergir em 10000 iterações
+            if iter >= 100000: # Código interrompe se não convergir em 10000 iterações
                 break
             for i in range(0,len(matrix_a)):
                 summ = 0    
