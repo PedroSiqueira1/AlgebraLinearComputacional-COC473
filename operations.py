@@ -50,16 +50,6 @@ def greater_jacobi(matrix):
     return greater_pos, greater_value
 
 
-def inverse_diagonal(matrix):
-    for c in range(len(matrix)):
-        if matrix[c][c] == 0:
-            print("ERROR - revert_diagonal - det = 0")
-            return matrix
-
-        matrix[c][c] = 1/matrix[c][c]
-    return matrix
-
-
 def dominant_diagonal(matrix):
     size = len(matrix)
     for c in range(size): # diagonal
