@@ -5,6 +5,9 @@ import operations as op
 
 def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
     
+    if not op.verify_square(matrix_a):
+        print("ERROR")
+        return {"log": "Matriz A não é quadrada"}
     if ICOD == 1:
         vector_x = np.full(len(matrix_a),1.0)
         lamb = 1
