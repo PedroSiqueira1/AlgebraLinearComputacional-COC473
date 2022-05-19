@@ -30,21 +30,23 @@ def main():
     # Get the variables from inputs.txt
     variables = {}
     for line in input_file:
-        line_elements = line.split(":")
-        try:
-            variables[line_elements[0].strip()] = float(line_elements[1])
-        except:
-            print(f"Error loading variable {line_elements[0]}, value: {line_elements[1]}")
-            output_file = open("out_log.txt", "w")
-            output_file.write(f"Unnable to load variable {line_elements[0]}, value: {line_elements[1]}")
-            output_file.close()
-            return False
+        if ":" in line:
+            line_elements = line.split(":")
+            try:
+                variables[line_elements[0].strip()] = float(line_elements[1])
+            except:
+                print(f"Error loading variable {line_elements[0]}, value: {line_elements[1]}")
+                output_file = open("out_log.txt", "w")
+                output_file.write(f"Unnable to load variable {line_elements[0]}, value: {line_elements[1]}")
+                output_file.close()
+                return False
     
     trabalho = variables["trabalho"] if ("trabalho" in variables) else 1
     N = variables["N"] if ("N" in variables) else 3
     ICOD = variables["ICOD"] if ("ICOD" in variables) else 3
     IDET = variables["IDET"] if ("IDET" in variables) else 0
     tolM = variables["tolM"] if ("tolM" in variables) else 0.001
+    coordinate_x = variables["coordinate_x"] if ("coordinate_x" in variables) else 0
 
     # Getting matrices
     try:
@@ -92,7 +94,7 @@ def main():
         
         points = file2matrix(points_file)
 
-        result = t3.main(points)
+        result = t3.main(ICOD=ICOD, N=N,  points=points, coordinate_x=coordinate_x)
 
     else:
         output_file = open("out_log.txt", "w")
