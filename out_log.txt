@@ -1,1 +1,1 @@
-ERROR - Matrix diagonal not dominant
+Matriz A não é simétrica

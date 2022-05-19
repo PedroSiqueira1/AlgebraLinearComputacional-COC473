@@ -1,7 +1,7 @@
 ﻿import trabalho1 as t1
 import trabalho2 as t2
 import trabalho3 as t3
-
+import re
 
 def file2matrix(matrix_file):
     matrix = []
@@ -9,7 +9,8 @@ def file2matrix(matrix_file):
     for line in matrix_file:
         row = line.split(" ")
         
-        matrix_line = [float(x) for x in row]
+        matrix_line = [float(re.sub('[^(0-9|\-|\.)]','', x)) for x in row]
+        
         matrix.append(matrix_line)
     return matrix
 

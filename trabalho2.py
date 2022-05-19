@@ -17,12 +17,15 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
         while(r > tolM):
             iteracoes += 1
             vector_x = np.matmul(matrix_a, vector_x)
+            print("vx:", vector_x)
             x_max = np.abs(vector_x).max()
+            print("x_max", x_max)
+            print("lamb", lamb)
 
             vector_x = vector_x/x_max
-
             r = abs(x_max - lamb)/abs(x_max)
             lamb = x_max
+
         
         return {"eigenvalues": lamb, "eigenvectors": vector_x, "iterations": iteracoes}
 
