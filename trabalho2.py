@@ -64,17 +64,14 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
 
             pos, value = op.greater_jacobi(matrix_a)
 
+        determinant = 1
         eigenvalues = []
         for c in range(len(matrix_a)):
             eigenvalues.append(matrix_a[c][c])
+            determinant *= matrix_a[c][c]
 
         return {"eigenvalues": eigenvalues, "eigenvectors": matrix_v, "iterations": iteracoes}
     
     print("Erro: ICOD inválido")
     return {"log": "ICOD inválido"}
 
-A = np.array([[1,0.2,0]
-   ,[0.2,1,0.5]
-   ,[0,0.5,1]],float)
-
-# print(main(matrix_a=A, ICOD=2))
