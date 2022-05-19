@@ -73,10 +73,7 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
         return answer
         
     
-    if (ICOD == 3): # Jacobi Method
-        if not op.verify_symmetry(matrix_a):
-            print("ERROR - Matrix not symmetric")
-            return {"log": "ERROR - Matrix not symmetric"}
+    if (ICOD == 3): # Jacobi Method 
 
         if not op.dominant_diagonal(matrix_a):
             print("ERROR - Matrix diagonal not dominant")

@@ -4,7 +4,10 @@ import operations as op
 
 
 def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
-    
+
+    if not op.verify_square(matrix_a):
+        print("ERROR")
+        return {"log": "Matriz A não é quadrada"}
     if ICOD == 1:
         vector_x = np.full(len(matrix_a),1.0)
         lamb = 1
@@ -66,11 +69,23 @@ def main(n=0, ICOD=1, IDET=0, matrix_a=None, tolM=0.00001):
 
         determinant = 1
         eigenvalues = []
+
         for c in range(len(matrix_a)):
             eigenvalues.append(matrix_a[c][c])
-            determinant *= matrix_a[c][c]
+            
+        answer = {"eigenvalues": eigenvalues, "eigenvectors": matrix_v, "iterations": iteracoes}
 
-        return {"eigenvalues": eigenvalues, "eigenvectors": matrix_v, "iterations": iteracoes, "determinant": determinant}
+        if(IDET > 0):
+            determinant = 1
+            for c in range(len(matrix_a)):
+                determinant *= matrix_a[c][c]
+             
+            answer["determinant"] = determinant
+
+    
+        
+
+        return answer
     
     print("Erro: ICOD inválido")
     return {"log": "ICOD inválido"}
