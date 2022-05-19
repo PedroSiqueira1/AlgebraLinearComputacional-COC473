@@ -97,3 +97,20 @@ def verify_symmetry(matrix):
                 # Not symmetric
                 return False
     return True
+
+def lu(matrix_a, matrix_b):
+    for i in range(0, len(matrix_a)):
+        for j in range(i+1, len(matrix_a)):
+            if matrix_a[i][i] == 0:
+                matrix_a = pivot(matrix_a, i)
+
+            matrix_a[j][i] = matrix_a[j][i] / matrix_a[i][i]
+        for k in range(i+1, len(matrix_a)):
+            for l in range(i+1, len(matrix_a)):
+                matrix_a[l][k] = matrix_a[l][k] - matrix_a[l][i] * matrix_a[i][k]
+    
+    matrix_b = forward_substitution(matrix_a, matrix_b, True)
+
+    matrix_b = backward_substitution(matrix_a, matrix_b)
+
+    return matrix_b
