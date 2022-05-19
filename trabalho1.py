@@ -118,10 +118,10 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
         residuo = []
         while True:
             iter +=1
-            if iter >= 100000: # Código interrompe se não convergir em 10000 iterações
+            if iter >= 10000: # Código interrompe se não convergir em 10000 iterações
                 break
             for i in range(0,len(matrix_a)):
-                summ = 0    
+                summ = 0        
                 for j in range(0,len(matrix_a)):
                     if j != i:
                         summ += (matrix_a[i][j]) * (x_new[j])
@@ -132,8 +132,13 @@ def main(N = 0, ICOD = 1, IDET = 0, matrix_a = None, matrix_b = None, tolM = 0.0
             if (np.linalg.norm(x_new - x_old)/np.linalg.norm(x_new)) <= tolM: # Código interrompe se o resíduo for menor que a tolerância escolhida.
                 break
             x_old = x_new.copy()
+
+        answer = {"vectorX": x_new, "iterations": iter, "residuo": residuo}
+        
+        if(IDET > 0):
+            answer["determinant"] = "Não é possivel calcular o determinante para este método"
             
-        return {"vectorX": x_new, "iterations": iter, "residuo": residuo}
+        return answer
     
     print("Invalid ICOD")
     return 0
