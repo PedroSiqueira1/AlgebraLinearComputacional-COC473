@@ -1,7 +1,6 @@
 ﻿import trabalho1 as t1
-import trabalho2 as t2
-import trabalho3 as t3
 import re
+
 
 def file2matrix(matrix_file):
     matrix = []
