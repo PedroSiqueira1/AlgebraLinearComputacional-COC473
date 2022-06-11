@@ -114,3 +114,9 @@ def lu(matrix_a, matrix_b):
     matrix_b = backward_substitution(matrix_a, matrix_b)
 
     return matrix_b
+
+def invert_jacobian(matrix):
+    matrix = np.array(matrix)
+    for i in range(len(matrix)):
+        matrix[i] = matrix[i] * -1
+    return matrix
