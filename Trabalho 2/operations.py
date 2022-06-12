@@ -98,7 +98,7 @@ def verify_symmetry(matrix):
     return True
 
 
-def lu(matrix_a, matrix_b):
+def lu(matrix_a, vector_b):
     for i in range(0, len(matrix_a)):
         for j in range(i+1, len(matrix_a)):
             if matrix_a[i][i] == 0:
@@ -109,11 +109,11 @@ def lu(matrix_a, matrix_b):
             for l in range(i+1, len(matrix_a)):
                 matrix_a[l][k] = matrix_a[l][k] - matrix_a[l][i] * matrix_a[i][k]
 
-    matrix_b = forward_substitution(matrix_a, matrix_b, True)
+    vector_b = forward_substitution(matrix_a, vector_b, True)
 
-    matrix_b = backward_substitution(matrix_a, matrix_b)
+    vector_b = backward_substitution(matrix_a, vector_b)
 
-    return matrix_b
+    return vector_b
 
 def invert_jacobian(matrix):
     matrix = np.array(matrix)
