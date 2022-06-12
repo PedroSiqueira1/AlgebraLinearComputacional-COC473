@@ -43,6 +43,8 @@ def get_jacobian(vector_x):
     jacobian = np.array([f1_gradient(c2, c3, c4), f2_gradient(c2, c3, c4), f3_gradient(c2, c3, c4)])
 
     return jacobian
+
+
 def apply_function(vector_x, theta1, theta2):
 
     c2 = vector_x[0]
@@ -60,10 +62,9 @@ def apply_function(vector_x, theta1, theta2):
     return vector_answer
 
 
-
 def newton_method(theta1, theta2, tolm, maxiter):
 
-    vector_x = np.array([1, 1, 1]) # Initial guess
+    vector_x = np.array([1.0, 1.0, 1.0]) # Initial guess
     for _ in range(maxiter):
         jacobian = get_jacobian(vector_x)
         vector_F = apply_function(vector_x,theta1,theta2)
@@ -77,9 +78,10 @@ def newton_method(theta1, theta2, tolm, maxiter):
     print('Matriz não convergiu!')
     return vector_x
 
+
 def broyden_method(theta1, theta2, tolm, maxiter):
 
-    vector_x = np.array([1,1,1]) # Initial guess
+    vector_x = np.array([1.0, 1.0, 1.0]) # Initial guess
     jacobian = np.identity(3) # Initial jacobian guess
     next_F = apply_function(vector_x, theta1, theta2)
 
@@ -104,7 +106,7 @@ def broyden_method(theta1, theta2, tolm, maxiter):
     return 1
 
 
-def main(ICOD = 1, theta1 = 0,theta2 = 0, tolM = 0.01, max_iter= 10000):
+def main(ICOD = 1, theta1 = 0, theta2 = 0, tolM = 0.01, max_iter = 10000):
     
     if (ICOD == 1): # Newthon Method
         
