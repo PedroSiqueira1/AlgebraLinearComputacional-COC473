@@ -69,7 +69,7 @@ def newton_method(vector_c, x, tolM, max_iter):
 
         x = x + delta_x
     
-    return {"root": x}
+    return x
 
 
 # INTEGRATE
@@ -94,14 +94,14 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0,1.0,1.0]), a = 100, b = 
             avg = (a + b) / 2
             answer = newton_method(vector_c, avg, tolM, max_iter)
         
-        return answer
+        return {"root": answer}
         
 
     if (ICOD == 2): # Integrate
         
-        answer = "Do the thing"
+        answer = "Not developed yet"
         
-        return answer
+        return {"log": answer}
     
     if (ICOD == 3): # Derivate
         delta_x = b # Use b as Δx
@@ -123,15 +123,12 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0,1.0,1.0]), a = 100, b = 
 
     if (ICOD == 4): # Deivate RE
         
-        answer = "Do the thing"
+        answer = "Not developed yet"
         
-        return answer
+        return {"log": answer}
         
     print("Invalid ICOD")
-    return 0
+    return {"log": "Invalid ICOD"}
 
 
-
-print(main(1))
-print(main(2))
 

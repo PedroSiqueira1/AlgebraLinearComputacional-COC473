@@ -103,8 +103,6 @@ def broyden_method(theta1, theta2, tolm, maxiter):
     print('Matriz não convergiu!')
     return vector_x    
 
-    return 1
-
 
 def main(ICOD = 1, theta1 = 0, theta2 = 0, tolM = 0.01, max_iter = 10000):
     
@@ -112,20 +110,20 @@ def main(ICOD = 1, theta1 = 0, theta2 = 0, tolM = 0.01, max_iter = 10000):
         
         answer = newton_method(theta1, theta2, tolM, max_iter)
         
-        return answer
+        return {"vector_x": answer}
         
 
     if (ICOD == 2): # Cholesky decomposition
         
         answer = broyden_method(theta1, theta2, tolM, max_iter)
         
-        return answer
+        return {"vector_x": answer}
         
     print("Invalid ICOD")
     return 0
 
 
 
-print(main(1))
-print(main(2))
+# print(main(1))
+# print(main(2))
 
