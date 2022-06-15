@@ -1,0 +1,9 @@
+Read variables: 
+﻿trabalho: 1.0
+ICOD: 2.0
+IDET: 9.0
+tolM: 1e-07
+coordinate_x: 2.5
+
+vector_x:
+[-0.81361644  0.17156979  0.21569883]
