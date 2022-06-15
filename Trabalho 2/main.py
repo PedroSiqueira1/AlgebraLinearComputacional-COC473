@@ -1,26 +1,17 @@
 ﻿import trabalho1 as t1
+import trabalho2 as t2
 import re
+import numpy as np
 
 
-def file2matrix(matrix_file):
-    matrix = []
-    line_c = 0
-    for line in matrix_file:
-        row = line.split(" ")
-        
-        matrix_line = [float(re.sub('[^(0-9|\-|\.)]','', x)) for x in row]
-        
-        matrix.append(matrix_line)
-    return matrix
+def line2array(vector_str):
+    strvalues_list = vector_str.split(" ")
+    
+    vector_lst = [float(re.sub('[^(0-9|\-|\.)]','', x)) for x in strvalues_list]
+    
+    np_arr = np.array(vector_lst)
 
-
-def file2vector(vector_file):
-    vector = []
-    line_c = 0
-
-    for line in vector_file:
-        vector.append(float(line))
-    return vector
+    return np_arr
 
 
 def main():
@@ -32,84 +23,69 @@ def main():
     for line in input_file:
         if ":" in line:
             line_elements = line.split(":")
-            try:
-                variables[line_elements[0].strip()] = float(line_elements[1])
-            except:
-                print(f"Error loading variable {line_elements[0]}, value: {line_elements[1]}")
-                output_file = open("out_log.txt", "w")
-                output_file.write(f"Unnable to load variable {line_elements[0]}, value: {line_elements[1]}")
-                output_file.close()
-                return False
-    
-    trabalho = variables["trabalho"] if ("trabalho" in variables) else 1
-    N = variables["N"] if ("N" in variables) else 3
-    ICOD = variables["ICOD"] if ("ICOD" in variables) else 3
-    IDET = variables["IDET"] if ("IDET" in variables) else 0
-    tolM = variables["tolM"] if ("tolM" in variables) else 0.001
-    coordinate_x = variables["coordinate_x"] if ("coordinate_x" in variables) else 0
-
-    # Getting matrices
-    try:
-        matrixA_file = open("matrixA.txt", "r")
-    except:
-        print("File 'matrixA' not found")
-        output_file = open("out_log.txt", "w")
-        output_file.write("File 'matrixA' not found")
-        output_file.close()
-        return False
-    
-    matrix_a = file2matrix(matrixA_file)
-    matrixA_file.close()
-    
-    try:
-        vectorB_file = open("vectorB.txt", "r")
-    except:
-        print("File 'matrixB' not found")
-        output_file = open("out_log.txt", "w")
-        output_file.write("File 'matrixB' not found")
-        output_file.close()
-        return False
-    
-    vector_b = file2vector(vectorB_file)
-    matrixA_file.close()
-
-
-    N = len(matrix_a)
-
-    if trabalho == 1:
-        result = t1.main(N=N, ICOD=ICOD, IDET=IDET, matrix_a=matrix_a, matrix_b=vector_b, tolM=tolM)
-    
-    elif trabalho == 2:
-        result = t2.main(n=N, ICOD=ICOD, IDET=IDET, matrix_a=matrix_a, tolM=tolM)
-
-    elif trabalho == 3:
-        try:
-            points_file = open("points.txt", "r")
-        except:
-            print("File 'points.txt' not found")
-            output_file = open("out_log.txt", "w")
-            output_file.write("File 'points.txt' not found")
-            output_file.close()
-            return False
-        
-        points = file2matrix(points_file)
-
-        result = t3.main(ICOD=ICOD, N=N,  points=points, coordinate_x=coordinate_x)
-
-    else:
-        output_file = open("out_log.txt", "w")
-        output_file.write(f"Invalid 'trabalho' value, value inserted: {variables['trabalho']}")
-        output_file.close()
-        return False
+            
+            key = line_elements[0].strip()
+            value = line_elements[1].strip()
+            if key == "c_values":
+                variables[key] = value # value is still a string here
+            
+            else:
+                try:
+                    variables[key] = float(value)
+                except:
+                    print(f"Error loading variable {key}, value: {value}")
+                    output_file = open("out_log.txt", "w")
+                    output_file.write(f"Unnable to load variable {key}, value: {value}")
+                    output_file.close()
+                    return False
 
     input_file.close()
 
-    print("Files:")
+    # VARIALBES
+    # global
+    trabalho = variables["trabalho"] if ("trabalho" in variables) else 1
+    icod = variables["ICOD"] if ("ICOD" in variables) else 3
+    method = variables["method"] if ("method" in variables) else 0
+    tolM = variables["tolM"] if ("tolM" in variables) else 0.001
+    max_iter = variables["max_iter"] if ("max_iter" in variables) else 10000
+
+    # trabalho1
+    theta1 = variables["theta1"] if ("theta1" in variables) else 0.5
+    theta2 = variables["theta2"] if ("theta2" in variables) else 0.5
+
+    # trabalho2
+    vector_c = line2array(variables["c_values"]) if ("c_values" in variables) else np.array([1.0, 1.0, 1.0, 1.0])
+    a = variables["a"] if ("a" in variables) else 100
+    b = variables["b"] if ("b" in variables) else -100
+    
+
+    if trabalho == 1:
+        result = t1.main(icod, theta1, theta2, tolM, max_iter)
+    
+    elif trabalho == 2:
+        result = t2.main(icod, method, vector_c, a, b, tolM, max_iter)
+
+    elif trabalho == 3:
+        pass
+
+    else:
+        output_file = open("outputs.txt", "w")
+        output_file.write(f"ERROR: Invalid 'trabalho' value, inserted: {trabalho}")
+        output_file.close()
+        return False
+
+
+    output_file = open(f"outputs.txt", "w")
+    output_file.write("Read variables: \n")
+    for key in variables:
+        output_file.write(f"{key}: {variables[key]}\n")
+
     for key in result:
         print(key)
-        output_file = open(f"out_{key}.txt", "w")
+        output_file.write("\n" + str(key) + ":\n")
         output_file.write(str(result[key]))
-        output_file.close()
+    
+    output_file.close()
 
     
     return True
