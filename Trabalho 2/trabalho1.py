@@ -73,10 +73,11 @@ def newton_method(theta1, theta2, tolm, maxiter):
         vector_x = vector_x + delta_x
         erro = np.linalg.norm(delta_x)/np.linalg.norm(vector_x)
         if (erro <= tolm):
-            return vector_x
+            return {"vector_x": vector_x}
         vector_x = vector_x 
     print('Matriz não convergiu!')
-    return vector_x
+
+    return {"vector_x": vector_x, "error": "Matriz não convergiu!"}
 
 
 def broyden_method(theta1, theta2, tolm, maxiter):
@@ -93,7 +94,7 @@ def broyden_method(theta1, theta2, tolm, maxiter):
         vector_x = vector_x + delta_x
         erro = np.linalg.norm(delta_x)/np.linalg.norm(vector_x)
         if (erro <= tolm):
-            return vector_x
+            return {"vector_x": vector_x}
 
         next_F = apply_function(vector_x, theta1, theta2)
         vector_y = next_F - vector_F
@@ -101,23 +102,23 @@ def broyden_method(theta1, theta2, tolm, maxiter):
         jacobian = jacobian + np.matmul((vector_y - np.matmul(jacobian, delta_x)), np.transpose(delta_x)) / np.matmul(np.transpose(delta_x), delta_x)
 
     print('Matriz não convergiu!')
-    return vector_x    
+    return {"vector_x": vector_x, "error": "Matriz não convergiu!"}    
 
 
 def main(ICOD = 1, theta1 = 0, theta2 = 0, tolM = 0.01, max_iter = 10000):
     
     if (ICOD == 1): # Newthon Method
         
-        answer = newton_method(theta1, theta2, tolM, max_iter)
+        answer_dict = newton_method(theta1, theta2, tolM, max_iter)
         
-        return {"vector_x": answer}
+        return answer_dict
         
 
     if (ICOD == 2): # Cholesky decomposition
         
-        answer = broyden_method(theta1, theta2, tolM, max_iter)
+        answer_dict = broyden_method(theta1, theta2, tolM, max_iter)
         
-        return {"vector_x": answer}
+        return answer_dict
         
     print("Invalid ICOD")
     return 0
