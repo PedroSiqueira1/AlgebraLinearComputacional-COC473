@@ -14,7 +14,7 @@ def derivate_function(vector_c, x):
     return answer
 
 def apply_function(vector_c, x):
-
+    return np.e**x
     c1 = vector_c[0]
     c2 = vector_c[1]
     c3 = vector_c[2]
@@ -85,6 +85,78 @@ def newton_method(vector_c, x, tolM, max_iter):
 
 
 # INTEGRATE
+# gauss quadrature function
+def gauss_quadrature(vector_c, a, b, n):
+    length = b-a
+
+    def app_fun(z):
+        x = 1/2 * (a + b + z*length) # b-a is the length of the interval
+        return apply_function(vector_c, x)
+
+    all_weights = [
+        [1.0, 1.0],
+        [0.88888, 0.55555, 0.55555],
+        [0.65215, 0.65215, 0.34786, 0.34786],
+        [0.56888, 0.47863, 0.47863, 0.23693, 0.23693],
+        [0.36076, 0.36076, 0.46791, 0.46791, 0.17132, 0.17132],
+        [0.41795, 0.38183, 0.38183, 0.27971, 0.27971, 0.12948, 0.12948],
+        [0.36268, 0.36268, 0.31370, 0.31370, 0.22238, 0.22238, 0.10123, 0.10123],
+        [0.33024, 0.18065, 0.18065, 0.08127, 0.08127, 0.31235, 0.31235, 0.26061, 0.26061],
+        [0.29552, 0.29552, 0.26927, 0.26927, 0.21909, 0.21909, 0.14945, 0.14945, 0.06667, 0.06667]
+        ]
+
+    all_points = [
+        [-0.57735, 0.57735],
+        [0.00000, -0.77460, 0.77460],
+        [-0.33998, 0.33998, -0.86114, 0.86114],
+        [0.00000, -0.53847, 0.53847, -0.90618, 0.90618],
+        [0.66121, -0.66121, -0.23862, 0.23862, -0.93247, 0.93247],
+        [0.00000, 0.40585, -0.40585, -0.74153, 0.74153, -0.94911, 0.94911],
+        [-0.18343, 0.18343, -0.52553, 0.52553, -0.79667, 0.79667, -0.96029, 0.96029],
+        [0.00000, -0.83603, 0.83603, -0.96816, 0.96816, -0.32425, 0.32425, -0.61337, 0.61337],
+        [-0.14887, 0.14887, -0.43340, 0.43340, -0.67941, 0.67941, -0.86506, 0.86506, -0.97391, 0.97391],
+        ]
+
+    weights = np.array(all_weights[n-2])
+    points = np.array(all_points[n-2])
+
+    # integral = length/2 * sum(wi * f(xi))
+    integral = 0
+    for i in range(n):
+        integral += weights[i] * app_fun(points[i])
+
+    integral = (length/2) * integral
+
+    return {"integral": integral}
+
+
+def polynomial_quadrature(vector_c, a, b, n):
+    length = b-a
+    all_weights = [
+        [length],
+        [length/2, length/2],
+        [length/6, 2*length/3, length/6],
+        [length/8, 3*length/8, 3*length/8, length/8],
+        [7*length/90, 16*length/45, 2**length/15, 16*length/45, 7*length/90]
+        ]
+
+    weight = np.array(all_weights[n-1])
+    
+    if n == 1:
+        coordinates = np.array([(a+b)/2])
+    else:
+        cord_list = []
+        step = (b-a)/(n-1)
+        for count in range(n):
+            cord_list.append(a + count*step)
+
+        coordinates = np.array(cord_list)
+
+    integral = 0
+    for i in range(len(coordinates)):
+        integral += weight[i] * apply_function(vector_c, coordinates[i])
+    
+    return {"integral": integral}
 
 
 # DERIVATE 
@@ -95,7 +167,7 @@ def derivate(vector_c, a, b):
 
     return derivate
 
-def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b = -100, tolM=0.00001, max_iter=10000):
+def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b = -100, n = 2, tolM=0.00001, max_iter=10000):
     
     if (ICOD == 1): # Find root
         
@@ -110,10 +182,15 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b 
         
 
     if (ICOD == 2): # Integrate
-        
-        answer = "Not developed yet"
-        
-        return {"error": answer}
+
+        if method == 0: # Guass quadrature
+            answer_dict = gauss_quadrature(vector_c, a, b, n)
+
+        else: # Polynomial quadrature
+            answer_dict = polynomial_quadrature(vector_c, a, b, n)
+
+        return answer_dict
+
     
     if (ICOD == 3): # Derivate
         delta_x = b # Use b as Δx
@@ -143,4 +220,4 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b 
     return {"error": "Invalid ICOD"}
 
 
-
+print(main(ICOD=2, method=1, vector_c=np.array([1.0, 1.0, 1.0]), a=0, b=2, n=3, tolM=0.00001, max_iter=10000))
