@@ -46,24 +46,23 @@ def get_jacobian(vector_x):
 
 
 def apply_function(vector_x, theta1, theta2):
-
     c2 = vector_x[0]
     c3 = vector_x[1]
     c4 = vector_x[2]
 
-    def function1(c2,c3,c4):
+    def function1(c2, c3, c4):
         return 2*(c3**2) + c2**2 + 6*(c4**2) - 1
-    def function2(c2,c3,c4):
+    def function2(c2, c3, c4):
         return 8*(c3**3) + 6*c3*(c2**2) + 36*c3*c2*c4 + 108*c3*(c4**2) - theta1
-    def function3(c2,c3,c4):
+    def function3(c2, c3, c4):
         return 60*(c3**4) + 60*(c3**2)*(c2**2) + 576*(c3**2)*c2*c4 + 2232*(c3**2)*(c4**2) + 252*(c4**2)*(c2**2) + 1296*(c4**3)*c2 + 3348*(c4**4) + 24*(c2**3)*c4 + (3*c2) - theta2
 
-    vector_answer = np.array([function1(c2,c3,c4),function2(c2,c3,c4),function3(c2,c3,c4)])
+    vector_answer = np.array([function1(c2, c3, c4), function2(c2, c3, c4), function3(c2, c3, c4)])
     return vector_answer
 
 
 def newton_method(theta1, theta2, tolm, maxiter):
-
+    print("newton")
     vector_x = np.array([1.0, 1.0, 1.0]) # Initial guess
     for _ in range(maxiter):
         jacobian = get_jacobian(vector_x)
@@ -81,13 +80,12 @@ def newton_method(theta1, theta2, tolm, maxiter):
 
 
 def broyden_method(theta1, theta2, tolm, maxiter):
-
+    print("broyden")
     vector_x = np.array([1.0, 1.0, 1.0]) # Initial guess
     jacobian = np.identity(3) # Initial jacobian guess
     next_F = apply_function(vector_x, theta1, theta2)
 
     for _ in range(maxiter):
-        jacobian = get_jacobian(vector_x)
         vector_F = next_F
         delta_x = op.lu(op.invert_jacobian(jacobian), vector_F) # AX = B -> -Jacobian * delta_x = vector_F
 
@@ -105,7 +103,7 @@ def broyden_method(theta1, theta2, tolm, maxiter):
     return {"vector_x": vector_x, "error": "Matriz não convergiu!"}    
 
 
-def main(ICOD = 1, theta1 = 0, theta2 = 0, tolM = 0.01, max_iter = 10000):
+def main(ICOD = 1, theta1 = 1, theta2 = 1, tolM = 0.01, max_iter = 1000):
     
     if (ICOD == 1): # Newthon Method
         
@@ -114,7 +112,7 @@ def main(ICOD = 1, theta1 = 0, theta2 = 0, tolM = 0.01, max_iter = 10000):
         return answer_dict
         
 
-    if (ICOD == 2): # Cholesky decomposition
+    if (ICOD == 2): # Broyden method
         
         answer_dict = broyden_method(theta1, theta2, tolM, max_iter)
         
@@ -125,6 +123,6 @@ def main(ICOD = 1, theta1 = 0, theta2 = 0, tolM = 0.01, max_iter = 10000):
 
 
 
-# print(main(1))
-# print(main(2))
+print(main(1))
+print(main(2))
 
