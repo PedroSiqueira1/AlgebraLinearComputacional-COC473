@@ -167,6 +167,21 @@ def derivate(vector_c, a, b):
 
     return derivate
 
+# DERIVATE RE
+def derivate_re(vector_c, x, delta1, delta2):
+    def app_fun(x):
+        return apply_function(vector_c, x)
+    
+    d1 = (app_fun(x+delta1) - app_fun(x+delta1)) / delta1
+    d2 = (app_fun(x+delta2) - app_fun(x+delta2)) / delta2
+    q = delta1 / delta2
+    p = 1 # sei lá kk
+
+    derivate = d1 + ((d1 - d2)/((q**(-p)) - 1))
+
+    return {"derivate": derivate}
+
+
 def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b = -100, n = 2, tolM=0.00001, max_iter=10000):
     
     if (ICOD == 1): # Find root
@@ -212,7 +227,7 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b 
 
     if (ICOD == 4): # Deivate RE
         
-        answer = "Not developed yet"
+        derivate_re(vector_c, a, b, n)
         
         return {"error": answer}
         
