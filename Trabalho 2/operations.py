@@ -33,8 +33,10 @@ def pivot(matrix_a, line):
             temp = matrix_a[line]
             matrix_a[line] = matrix_a[k]
             matrix_a[k] = temp
-    
-    return matrix_a
+            return {"success": True, "matrix_a": matrix_a }
+
+    print("ERROR de pivotagem")
+    return {"success": False}
 
 
 # Jacobi
@@ -97,12 +99,48 @@ def verify_symmetry(matrix):
                 return False
     return True
 
+def gauss_seidel(matrix_a, vector_b):
+    print("gauss")
+    print("matrix_a\n", matrix_a)
+    print("vector_b\n", vector_b)
+
+    x_old = np.full(len(matrix_a),1.0) # Vector full of 1
+    x_new = np.full(len(matrix_a),2.0) # Vector full of 2
+    iter = 0
+    residuo = []
+    while True:
+        iter +=1
+        if iter >= 10000: # Código interrompe se não convergir em 10000 iterações
+            break
+        for i in range(0,len(matrix_a)):
+            summ = 0        
+            for j in range(0,len(matrix_a)):
+                if j != i:
+                    summ += (matrix_a[i][j]) * (x_new[j])
+            x_new[i] = (vector_b[i] - summ)/matrix_a[i][i]
+
+        residuo.append(np.linalg.norm(x_new - x_old)/np.linalg.norm(x_new))
+
+        if (np.linalg.norm(x_new - x_old)/np.linalg.norm(x_new)) <= 0.001: # Código interrompe se o resíduo for menor que a tolerância escolhida.
+            break
+        x_old = x_new.copy()
+    print("gauss:", x_new)
+    return x_new
+
 
 def lu(matrix_a, vector_b):
+    matrix_a_init = matrix_a
+    vector_b_init = vector_b
+
     for i in range(0, len(matrix_a)):
         for j in range(i+1, len(matrix_a)):
             if matrix_a[i][i] == 0:
-                matrix_a = pivot(matrix_a, i)
+                pivot_result = pivot(matrix_a, i)
+
+                if pivot_result["success"]:
+                    matrix_a = pivot_result["matrix_a"]
+                else:
+                    return gauss_seidel(matrix_a_init, vector_b_init)
 
             matrix_a[j][i] = matrix_a[j][i] / matrix_a[i][i]
         for k in range(i+1, len(matrix_a)):
