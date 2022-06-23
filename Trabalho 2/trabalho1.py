@@ -63,12 +63,14 @@ def apply_function(vector_x, theta1, theta2):
 
 def newton_method(theta1, theta2, tolm, maxiter):
     print("newton")
-    vector_x = np.array([1.0, 1.0, 1.0]) # Initial guess
+    vector_x = np.array([1.0, 0.0, 0.0]) # Initial guess
     for _ in range(maxiter):
         jacobian = get_jacobian(vector_x)
+        inverse_jacobian = np.linalg.inv(jacobian)
         vector_F = apply_function(vector_x,theta1,theta2)
-        delta_x = op.lu(op.invert_jacobian(jacobian), vector_F) # AX = B -> -Jacobian * delta_x = vector_F
-
+        
+        delta_x = np.matmul(op.invert_jacobian(inverse_jacobian), vector_F) # AX = B -> -Jacobian * delta_x = vector_F
+        
         vector_x = vector_x + delta_x
         erro = np.linalg.norm(delta_x)/np.linalg.norm(vector_x)
         if (erro <= tolm):
@@ -81,13 +83,14 @@ def newton_method(theta1, theta2, tolm, maxiter):
 
 def broyden_method(theta1, theta2, tolm, maxiter):
     print("broyden")
-    vector_x = np.array([1.0, 1.0, 1.0]) # Initial guess
+    vector_x = np.array([1.0, 0.0, 0.0]) # Initial guess
     jacobian = np.identity(3) # Initial jacobian guess
     next_F = apply_function(vector_x, theta1, theta2)
 
     for _ in range(maxiter):
         vector_F = next_F
-        delta_x = op.lu(op.invert_jacobian(jacobian), vector_F) # AX = B -> -Jacobian * delta_x = vector_F
+        inverse_jacobian = np.linalg.inv(jacobian)
+        delta_x = np.matmul(op.invert_jacobian(inverse_jacobian), vector_F) # AX = B -> -Jacobian * delta_x = vector_F
 
         vector_x = vector_x + delta_x
         erro = np.linalg.norm(delta_x)/np.linalg.norm(vector_x)
@@ -97,13 +100,15 @@ def broyden_method(theta1, theta2, tolm, maxiter):
         next_F = apply_function(vector_x, theta1, theta2)
         vector_y = next_F - vector_F
         # J = J + (Y - B*ΔX)*ΔXt / (ΔXt * ΔX)
-        jacobian = jacobian + np.matmul((vector_y - np.matmul(jacobian, delta_x)), np.transpose(delta_x)) / np.matmul(np.transpose(delta_x), delta_x)
+        first_numerator = (vector_y - np.matmul(jacobian, delta_x))[:,None] # Y - B*ΔX
+        second_numerator = np.transpose(delta_x[:,None]) #ΔXt
+        jacobian = jacobian + np.matmul(first_numerator, second_numerator) / np.matmul(np.transpose(delta_x[:,None]), delta_x[:,None])
 
     print('Matriz não convergiu!')
     return {"vector_x": vector_x, "error": "Matriz não convergiu!"}    
 
 
-def main(ICOD = 1, theta1 = 1, theta2 = 1, tolM = 0.01, max_iter = 1000):
+def main(ICOD = 1, theta1 = 0.75, theta2 = 6.5, tolM = 0.0001, max_iter = 10000):
     
     if (ICOD == 1): # Newthon Method
         
@@ -123,6 +128,4 @@ def main(ICOD = 1, theta1 = 1, theta2 = 1, tolM = 0.01, max_iter = 1000):
 
 
 
-print(main(1))
-print(main(2))
 
