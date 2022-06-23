@@ -165,17 +165,17 @@ def derivate(vector_c, a, b):
     f_b = apply_function(vector_c, b)
     derivate = (f_b - f_a) / (b - a)
 
-    return derivate
+    return {"derivate": derivate}
 
 # DERIVATE RE
 def derivate_re(vector_c, x, delta1, delta2):
     def app_fun(x):
         return apply_function(vector_c, x)
     
-    d1 = (app_fun(x+delta1) - app_fun(x+delta1)) / delta1
-    d2 = (app_fun(x+delta2) - app_fun(x+delta2)) / delta2
+    d1 = (app_fun(x+delta1) - app_fun(x)) / delta1
+    d2 = (app_fun(x+delta2) - app_fun(x)) / delta2
     q = delta1 / delta2
-    p = 1 # sei lá kk
+    p = 1
 
     derivate = d1 + ((d1 - d2)/((q**(-p)) - 1))
 
@@ -188,11 +188,13 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b 
         
         if method == 0:
             answer_dict = bisection_method(vector_c, a, b, tolM)
-        
+            answer_dict["variables"] = {"vector_c": vector_c, "a": a, "b": b, "tolM": tolM}
+
         else:
             avg = (a + b) / 2
             answer_dict = newton_method(vector_c, avg, tolM, max_iter)
-        
+            answer_dict["variables"] = {"vector_c": vector_c, "avg": avg, "tolM": tolM, "max_iter": max_iter}
+
         return answer_dict
         
 
@@ -200,9 +202,11 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b 
 
         if method == 0: # Guass quadrature
             answer_dict = gauss_quadrature(vector_c, a, b, n)
+            answer_dict["variables"] = {"vector_c": vector_c, "a": a, "b": b, "n": n}
 
         else: # Polynomial quadrature
             answer_dict = polynomial_quadrature(vector_c, a, b, n)
+            answer_dict["variables"] = {"vector_c": vector_c, "a": a, "b": b, "n": n}
 
         return answer_dict
 
@@ -211,28 +215,34 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b 
         delta_x = b # Use b as Δx
         if method == 0: # step ahead
             step = a + delta_x
-            answer = derivate(vector_c, a, step)
+            answer_dict = derivate(vector_c, a, step)
+            answer_dict["variables"] = {"vector_c": vector_c, "x1 [a]": a, "x2 [a+b]": step}
 
         elif method == 1: # step behind
             step = a - delta_x
-            answer = derivate(vector_c, step, a)
+            answer_dict = derivate(vector_c, step, a)
+            print()
+            answer_dict["variables"] = {"vector_c": vector_c, "x1 [a-b]": step, "x2 [a]": a}
 
         elif method == 2: # central
             step = (delta_x/2)
             x1 = a-step
             x2 = a+step
-            answer = derivate(vector_c, x1, x2)
-        
-        return answer
+            answer_dict = derivate(vector_c, x1, x2)
+            answer_dict["variables"] = {"vector_c": vector_c, "x1 [a-b/2]": x1, "x2 [a+b/2]": x2}
+
+        return answer_dict
 
     if (ICOD == 4): # Deivate RE
         
-        derivate_re(vector_c, a, b, n)
+        answer_dict = derivate_re(vector_c, a, b, n) # vector_c, x, /\1, /\2
         
-        return {"error": answer}
+        answer_dict["variables"] = {"vector_c": vector_c, "x [a]": a, "delta1 [b]": b, "delta2 [n]": n}
+        return answer_dict
         
     print("Invalid ICOD")
     return {"error": "Invalid ICOD"}
 
 
-print(main(ICOD=2, method=1, vector_c=np.array([1.0, 1.0, 1.0]), a=0, b=2, n=3, tolM=0.00001, max_iter=10000))
+print(main(ICOD=3, method=1, vector_c=np.array([1.0, 1.0, 1.0]), a=1, b=0.25, n=3, tolM=0.00001, max_iter=10000))
+print(main(ICOD=4, method=1, vector_c=np.array([1.0, 1.0, 1.0]), a=1, b=0.25, n=0.5, tolM=0.00001, max_iter=10000))
