@@ -1,28 +1,7 @@
 import numpy as np
 import operations as op
 
-def apply_function(x1, x2, vector_a, vector_w):
-    a1 = vector_a[0]
-    a2 = vector_a[1]
-    a3 = vector_a[2]
-
-    w1 = vector_w[0]
-    w2 = vector_w[1]
-    w3 = vector_w[2]
-    return 
-
-def runge_kutta_nystrom(tempo_total, h, tn, n,  vector_a, vector_w):
-    def f_derivada(t, x, dx): # returns dxx aka x''
-        a1 = vector_a[0]
-        a2 = vector_a[1]
-        a3 = vector_a[2]
-
-        w1 = vector_w[0]
-        w2 = vector_w[1]
-        w3 = vector_w[2]
-
-        return a1*np.sin(w1*t) + a2*np.sin(w2*t) + a3*np.cos(w3*t)
-    
+def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
     def f_normal(t): # returns f(t)?
         a1 = vector_a[0]
         a2 = vector_a[1]
@@ -31,13 +10,21 @@ def runge_kutta_nystrom(tempo_total, h, tn, n,  vector_a, vector_w):
         w1 = vector_w[0]
         w2 = vector_w[1]
         w3 = vector_w[2]
-
         return a1*np.sin(w1*t) + a2*np.sin(w2*t) + a3*np.cos(w3*t)
-    
 
-    n_steps = tempo_total/h
+
+    def f_derivada(t, x, dx): # returns ddx aka x''
+        return (f_normal(t) - c*dx - k*x)/m
+
+
+    n_steps = int(tempo_total/h)
     t = 0.0
     dx = x = 0.0 # y'(0) = y(0) = 0.0
+
+    outputs = [
+        ("t", "d", "v", "a"),
+        (t, x, dx, f_derivada(t, x, dx))
+    ]
 
     for _ in range(n_steps):
 
@@ -55,14 +42,18 @@ def runge_kutta_nystrom(tempo_total, h, tn, n,  vector_a, vector_w):
         dx = dx + 1/3*(k1 + 2*k2 + 2*k3 + k4)
 
         t = t + h
+        
+        outputs.append((t, x, dx, f_derivada(t, x, dx)))
     
-    return {"x": x}
+    return {"result": outputs}
+
 
 def main(passo=1, tempo_total=10, m=1, c=0.1, k=2, vector_a=np.array([1.0, 2.0, 1.5]), vector_w=np.array([0.05, 1.0, 2.0])):
     
-    answer = runge_kutta_nystrom(tempo_total, passo, vector_a, vector_w)
+    answer = runge_kutta_nystrom(tempo_total, passo, m, c, k, vector_a, vector_w)
+    answer["variables"] = {"passo": passo, "tempo_total": tempo_total, "m": m, "c": c, "k": k, "vector_a": vector_a, "vector_w": vector_w}
 
-    return {"error": answer}
+    return answer
 
 
-
+print(main())
