@@ -62,8 +62,7 @@ def apply_function(vector_x, theta1, theta2):
 
 
 def newton_method(theta1, theta2, tolm, maxiter):
-
-    dados_utilizados = [theta1, theta2, tolm, maxiter]
+    
     print("newton")
     vector_x = np.array([1.0, 0.0, 0.0]) # Initial guess
     for _ in range(maxiter):
@@ -76,16 +75,14 @@ def newton_method(theta1, theta2, tolm, maxiter):
         vector_x = vector_x + delta_x
         erro = np.linalg.norm(delta_x)/np.linalg.norm(vector_x)
         if (erro <= tolm):
-             return {"Dados Utilizados": dados_utilizados, "vector_x": vector_x}
+            return {"vector_x": vector_x}
         vector_x = vector_x 
     print('Matriz não convergiu!')
 
-    return {"Dados Utilizados": dados_utilizados, "vector_x": vector_x, "error": "Matriz não convergiu!"}
+    return {"vector_x": vector_x, "error": "Matriz não convergiu!"}
 
 
 def broyden_method(theta1, theta2, tolm, maxiter):
-
-    dados_utilizados = [theta1, theta2, tolm, maxiter]
     print("broyden")
     vector_x = np.array([1.0, 0.0, 0.0]) # Initial guess
     jacobian = np.identity(3) # Initial jacobian guess
@@ -99,7 +96,7 @@ def broyden_method(theta1, theta2, tolm, maxiter):
         vector_x = vector_x + delta_x
         erro = np.linalg.norm(delta_x)/np.linalg.norm(vector_x)
         if (erro <= tolm):
-            return {"Dados Utilizados": dados_utilizados, "vector_x": vector_x}
+            return {"vector_x": vector_x}
 
         next_F = apply_function(vector_x, theta1, theta2)
         vector_y = next_F - vector_F
@@ -109,7 +106,7 @@ def broyden_method(theta1, theta2, tolm, maxiter):
         jacobian = jacobian + np.matmul(first_numerator, second_numerator) / np.matmul(np.transpose(delta_x[:,None]), delta_x[:,None])
 
     print('Matriz não convergiu!')
-    return {"Dados Utilizados": dados_utilizados, "vector_x": vector_x, "error": "Matriz não convergiu!"}
+    return {"vector_x": vector_x, "error": "Matriz não convergiu!"}    
 
 
 def main(ICOD = 1, theta1 = 0.75, theta2 = 6.5, tolM = 0.0001, max_iter = 10000):
@@ -117,6 +114,7 @@ def main(ICOD = 1, theta1 = 0.75, theta2 = 6.5, tolM = 0.0001, max_iter = 10000)
     if (ICOD == 1): # Newthon Method
         
         answer_dict = newton_method(theta1, theta2, tolM, max_iter)
+        answer_dict["variables"] = {"Theta1": theta1, "Theta2": theta2, "tolM": tolM, "max_iter": max_iter}
         
         return answer_dict
         
@@ -124,6 +122,7 @@ def main(ICOD = 1, theta1 = 0.75, theta2 = 6.5, tolM = 0.0001, max_iter = 10000)
     if (ICOD == 2): # Broyden method
         
         answer_dict = broyden_method(theta1, theta2, tolM, max_iter)
+        answer_dict["variables"] = {"Theta1": theta1, "Theta2": theta2, "tolM": tolM, "max_iter": max_iter}
         
         return answer_dict
         
