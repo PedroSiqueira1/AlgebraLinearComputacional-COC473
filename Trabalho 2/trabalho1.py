@@ -62,6 +62,7 @@ def apply_function(vector_x, theta1, theta2):
 
 
 def newton_method(theta1, theta2, tolm, maxiter):
+    
     print("newton")
     vector_x = np.array([1.0, 0.0, 0.0]) # Initial guess
     for _ in range(maxiter):
@@ -113,6 +114,7 @@ def main(ICOD = 1, theta1 = 0.75, theta2 = 6.5, tolM = 0.0001, max_iter = 10000)
     if (ICOD == 1): # Newthon Method
         
         answer_dict = newton_method(theta1, theta2, tolM, max_iter)
+        answer_dict["variables"] = {"Theta1": theta1, "Theta2": theta2, "tolM": tolM, "max_iter": max_iter}
         
         return answer_dict
         
@@ -120,6 +122,7 @@ def main(ICOD = 1, theta1 = 0.75, theta2 = 6.5, tolM = 0.0001, max_iter = 10000)
     if (ICOD == 2): # Broyden method
         
         answer_dict = broyden_method(theta1, theta2, tolM, max_iter)
+        answer_dict["variables"] = {"Theta1": theta1, "Theta2": theta2, "tolM": tolM, "max_iter": max_iter}
         
         return answer_dict
         
