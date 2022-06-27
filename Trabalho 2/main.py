@@ -1,5 +1,6 @@
 ﻿import trabalho1 as t1
 import trabalho2 as t2
+import trabalho3 as t3
 import re
 import numpy as np
 
@@ -58,6 +59,14 @@ def main():
     a = variables["a"] if ("a" in variables) else 100
     b = variables["b"] if ("b" in variables) else -100
     
+    # trabalho 3
+    passo = variables["passo"] if "passo" in variables else 1
+    tempo_total = variables["tempo_total"] if "tempo_total" in variables else 10
+    m = variables["m"] if "m" in variables else 1
+    c = variables["c"] if "c" in variables else 0.1
+    k = variables["k"] if "k" in variables else 2
+    vector_a = line2array(variables["vector_a"]) if "vector_a" in variables else np.array([1.0, 2.0, 1.5])
+    vector_w = line2array(variables["vector_w"]) if "vector_w" in variables else np.array([0.05, 1.0, 2.0])
 
     if trabalho == 1:
         result = t1.main(icod, theta1, theta2, tolM, max_iter)
@@ -66,7 +75,7 @@ def main():
         result = t2.main(icod, method, vector_c, a, b, tolM, max_iter)
 
     elif trabalho == 3:
-        pass
+        result = t3.main(passo=passo, tempo_total=tempo_total, m=m, c=c, k=k, vector_a=vector_a, vector_w=vector_w)
 
     else:
         output_file = open("outputs.txt", "w")
@@ -76,9 +85,9 @@ def main():
 
 
     output_file = open(f"outputs.txt", "w")
-    output_file.write("Read variables: \n")
-    for key in variables:
-        output_file.write(f"{key}: {variables[key]}\n")
+    # output_file.write("Read variables: \n")
+    # for key in variables:
+    #     output_file.write(f"{key}: {variables[key]}\n")
 
     for key in result:
         print(key)

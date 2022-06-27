@@ -66,13 +66,15 @@ def bisection_method(vector_c, a, b, tolM):
 def newton_method(vector_c, x, tolM, max_iter):
 
     iter = 0
-    while (delta_x > tolM and iter < max_iter):
+    delta_x = 10
+    while (abs(delta_x) > tolM and iter < max_iter):
+        
         iter += 1
         f_x = apply_function(vector_c, x)
         derivate = derivate_function(vector_c, x)
 
         delta_x = (-1) * f_x / derivate 
-
+        
         x = x + delta_x
     
 
@@ -137,7 +139,7 @@ def polynomial_quadrature(vector_c, a, b, n):
         [length/2, length/2],
         [length/6, 2*length/3, length/6],
         [length/8, 3*length/8, 3*length/8, length/8],
-        [7*length/90, 16*length/45, 2**length/15, 16*length/45, 7*length/90]
+        [7*length/90, 16*length/45, 2**length/15, 16*length/45, 7*length/90],
         ]
 
     weight = np.array(all_weights[n-1])
@@ -244,5 +246,4 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b 
     return {"error": "Invalid ICOD"}
 
 
-print(main(ICOD=3, method=1, vector_c=np.array([1.0, 1.0, 1.0]), a=1, b=0.25, n=3, tolM=0.00001, max_iter=10000))
-print(main(ICOD=4, method=1, vector_c=np.array([1.0, 1.0, 1.0]), a=1, b=0.25, n=0.5, tolM=0.00001, max_iter=10000))
+print(main(ICOD=1, method=1, vector_c=np.array([1.0, 1.0, 1.0,1.0]), a=-20, b=30, n=3, tolM=0.00001, max_iter=1000000))
