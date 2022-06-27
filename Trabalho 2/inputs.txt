@@ -1,9 +1,17 @@
-﻿trabalho: 1
-ICOD: 2
+﻿trabalho: 2
+ICOD: 3
 method: 2
-tolM: 0.0000001
-max_iter: 2000
-theta1: 1
-theta2: 2
-a: 1
-b: 2
+tolM: 0.01
+max_iter: 10000
+a: 10
+b: 0.1
+vector_c: 1 0 -2 3
+theta1: 0.01
+theta2: 11.667
+passo: 10
+tempo_total: 60
+m: 1
+c: 0.1
+k: 2
+vector_a: 1.0 2.0 1.5
+vector_w: 0.05 1.0 2.0
