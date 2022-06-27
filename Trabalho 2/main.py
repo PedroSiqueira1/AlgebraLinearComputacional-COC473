@@ -47,7 +47,7 @@ def main():
     icod = variables["ICOD"] if ("ICOD" in variables) else 3
     method = variables["method"] if ("method" in variables) else 0
     tolM = variables["tolM"] if ("tolM" in variables) else 0.001
-    max_iter = variables["max_iter"] if ("max_iter" in variables) else 10000
+    max_iter = int(variables["max_iter"]) if ("max_iter" in variables) else 10000
 
     # trabalho1
     theta1 = variables["theta1"] if ("theta1" in variables) else 0.5
@@ -76,13 +76,13 @@ def main():
 
 
     output_file = open(f"outputs.txt", "w")
-    output_file.write("Read variables: \n")
-    for key in variables:
-        output_file.write(f"{key}: {variables[key]}\n")
+    # output_file.write("Read variables: \n")
+    # for key in variables:
+    #     output_file.write(f"{key}: {variables[key]}\n")
 
     for key in result:
         print(key)
-        output_file.write("\n" + str(key) + ":\n")
+        output_file.write("\n\n" + str(key) + ":\n")
         output_file.write(str(result[key]))
     
     output_file.close()

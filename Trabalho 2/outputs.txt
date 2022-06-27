@@ -1,9 +1,10 @@
-Read variables: 
-ï»¿trabalho: 1.0
-ICOD: 2.0
-IDET: 9.0
-tolM: 1e-07
-coordinate_x: 2.5
+
 
 vector_x:
-[-0.81361644  0.17156979  0.21569883]
+[1886.61661595 -757.3353873  -467.62953425]
+
+error:
+Matriz não convergiu!
+
+variables:
+{'Theta1': 1.0, 'Theta2': 2.0, 'tolM': 1e-07, 'max_iter': 2000}

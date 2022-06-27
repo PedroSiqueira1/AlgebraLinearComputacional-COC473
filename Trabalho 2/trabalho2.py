@@ -141,7 +141,8 @@ def polynomial_quadrature(vector_c, a, b, n):
         [(19*length)/288, (75*length)/288, (50*length)/288, (50*length)/288, (75*length)/288, (19*length)/288],
         [(41*length)/(140*6), (216*length)/(140*6), (27*length)/(140*6), (272*length)/(140*6), (27*length)/(140*6), (216*length)/(140*6), (41*length)/(140*6)],
         [(751*length)/(17280), (3577*length)/(17280), (1323*length)/(17280), (2989*length)/(17280), (2989*length)/(17280), (1323*length)/(17280), (3577*length)/(17280), (751*length)/(17280)],
-        [(989*length)/(28350), (5888*length)/(28350), (928*length)/(28350), (10496*length)/(28350), (4540*length)/(28350), (10496*length)/(28350), (928*length)/(28350), (5888*length)/(28350), (989*length)/(28350)],
+        # [(989*length)/(28350), (5888*length)/(28350), (928*length)/(28350), (10496*length)/(28350), (4540*length)/(28350), (10496*length)/(28350), (928*length)/(28350), (5888*length)/(28350), (989*length)/(28350)],
+        [(989*length)/(28350), (5888*length)/(28350), (-928*length)/(28350), (10496*length)/(28350), (-4540*length)/(28350), (10496*length)/(28350), (-928*length)/(28350), (5888*length)/(28350), (989*length)/(28350)],
         [(2857*length)/(89600), (15741*length)/(89600), (1080*length)/(89600), (19344*length)/(89600), (5778*length)/(89600), (5778*length)/(89600), (19344*length)/(89600), (1080*length)/(89600), (15741*length)/(89600), (2857*length)/(89600)]
     ]
     weight = np.array(all_weights[n-1])
@@ -248,5 +249,5 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b 
     return {"error": "Invalid ICOD"}
 
 
-print(main(ICOD=3, method=1, vector_c=np.array([1.0, 1.0, 1.0]), a=1, b=0.25, n=3, tolM=0.00001, max_iter=10000))
-print(main(ICOD=4, method=1, vector_c=np.array([1.0, 1.0, 1.0]), a=1, b=0.25, n=0.5, tolM=0.00001, max_iter=10000))
+# print(main(ICOD=2, method=0, vector_c=np.array([1.0, 1.0, 1.0]), a=1, b=5, n=2, tolM=0.00001, max_iter=10000))
+# print(main(ICOD=2, method=1, vector_c=np.array([1.0, 1.0, 1.0]), a=1, b=5, n=2, tolM=0.00001, max_iter=10000))

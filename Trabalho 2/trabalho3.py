@@ -21,6 +21,9 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
     t = 0.0
     dx = x = 0.0 # y'(0) = y(0) = 0.0
 
+    print("tempo", "deslocamento", "velocidade", "aceleração")
+    print(t, x, dx, f_derivada(t, x, dx))
+
     outputs = [
         ("tempo", "deslocamento", "velocidade", "aceleração"),
         (t, x, dx, f_derivada(t, x, dx))
@@ -43,7 +46,7 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
 
         t = t + h
         outputs.append((t, x, dx, f_derivada(t, x, dx)))
-    
+        print(t, x, dx, f_derivada(t, x, dx))
     return {"result": outputs}
 
 

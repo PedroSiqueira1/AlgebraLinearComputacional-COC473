@@ -1,5 +1,9 @@
 ﻿trabalho: 1
 ICOD: 2
-IDET: 9
+method: 2
 tolM: 0.0000001
-coordinate_x: 2.5
+max_iter: 2000
+theta1: 1
+theta2: 2
+a: 1
+b: 2
