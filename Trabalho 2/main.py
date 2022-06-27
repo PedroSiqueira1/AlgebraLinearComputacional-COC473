@@ -25,17 +25,17 @@ def main():
         if ":" in line:
             line_elements = line.split(":")
             
-            key = line_elements[0].strip()
-            value = line_elements[1].strip()
-            if key == "c_values":
+            key = re.sub('[^(A-Z|a-z\_)|0-9]', '', line_elements[0].strip())
+            value = re.sub('[^(\.|\s|\-|0-9)]', '', line_elements[1].strip())
+            if key in {"vector_a", "vector_w", "vector_c"}:
                 variables[key] = value # value is still a string here
             
             else:
                 try:
                     variables[key] = float(value)
                 except:
-                    print(f"Error loading variable {key}, value: {value}")
-                    output_file = open("out_log.txt", "w")
+                    print(f"Error loading variable {key}, value: {value}, line: {line}")
+                    output_file = open("outputs.txt", "w")
                     output_file.write(f"Unnable to load variable {key}, value: {value}")
                     output_file.close()
                     return False
@@ -43,6 +43,7 @@ def main():
     input_file.close()
 
     # VARIALBES
+    print(variables)
     # global
     trabalho = variables["trabalho"] if ("trabalho" in variables) else 1
     icod = variables["ICOD"] if ("ICOD" in variables) else 3
@@ -55,9 +56,10 @@ def main():
     theta2 = variables["theta2"] if ("theta2" in variables) else 0.5
 
     # trabalho2
-    vector_c = line2array(variables["c_values"]) if ("c_values" in variables) else np.array([1.0, 1.0, 1.0, 1.0])
+    vector_c = line2array(variables["vector_c"]) if ("vector_c" in variables) else np.array([1.0, 1.0, 1.0, 1.0])
     a = variables["a"] if ("a" in variables) else 100
     b = variables["b"] if ("b" in variables) else -100
+    n = variables["n"] if ("n" in variables) else 2
     
     # trabalho 3
     passo = variables["passo"] if "passo" in variables else 1
@@ -72,10 +74,10 @@ def main():
         result = t1.main(icod, theta1, theta2, tolM, max_iter)
     
     elif trabalho == 2:
-        result = t2.main(icod, method, vector_c, a, b, tolM, max_iter)
+        result = t2.main(icod, method, vector_c, a, b, n, tolM, max_iter)
 
     elif trabalho == 3:
-        result = t3.main(passo=passo, tempo_total=tempo_total, m=m, c=c, k=k, vector_a=vector_a, vector_w=vector_w)
+        result = t3.main(passo, tempo_total, m, c, k, vector_a, vector_w)
 
     else:
         output_file = open("outputs.txt", "w")
@@ -85,14 +87,19 @@ def main():
 
 
     output_file = open(f"outputs.txt", "w")
-    # output_file.write("Read variables: \n")
-    # for key in variables:
-    #     output_file.write(f"{key}: {variables[key]}\n")
 
     for key in result:
-        print(key)
         output_file.write("\n\n" + str(key) + ":\n")
-        output_file.write(str(result[key]))
+        if type(result[key]) == list:
+            for value in result[key]:
+                output_file.write(str(value)+"\n")
+
+        elif type(result[key]) == dict:
+            for value in result[key]:
+                output_file.write(str(value) + ": " + str(result[key][value])+"\n")
+
+        else:
+            output_file.write(str(result[key]))
     
     output_file.close()
 
