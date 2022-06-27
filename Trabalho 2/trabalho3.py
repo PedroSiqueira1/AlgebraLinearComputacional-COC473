@@ -32,7 +32,6 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
 
         k1 = 0.5*h * f_derivada(t, x, dx)
         q = 0.5*h * (dx + 0.5*k1)
-        print(k1, h, t, x, dx)
 
         k2 = 0.5*h * f_derivada((t+h/2), (x+q), (dx+k1))
 
