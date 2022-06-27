@@ -114,7 +114,7 @@ def main(ICOD = 1, theta1 = 0.75, theta2 = 6.5, tolM = 0.0001, max_iter = 10000)
     if (ICOD == 1): # Newthon Method
         
         answer_dict = newton_method(theta1, theta2, tolM, max_iter)
-        answer_dict["variables"] = {"Theta1": theta1, "Theta2": theta2, "tolM": tolM, "max_iter": max_iter}
+        answer_dict["variables"] = {"trabalho": 1, "ICOD": 1, "theta1": theta1, "theta2": theta2, "tolM": tolM, "max_iter": max_iter}
         
         return answer_dict
         
@@ -122,7 +122,7 @@ def main(ICOD = 1, theta1 = 0.75, theta2 = 6.5, tolM = 0.0001, max_iter = 10000)
     if (ICOD == 2): # Broyden method
         
         answer_dict = broyden_method(theta1, theta2, tolM, max_iter)
-        answer_dict["variables"] = {"Theta1": theta1, "Theta2": theta2, "tolM": tolM, "max_iter": max_iter}
+        answer_dict["variables"] = {"trabalho": 1, "ICOD": 2, "theta1": theta1, "theta2": theta2, "tolM": tolM, "max_iter": max_iter}
         
         return answer_dict
         

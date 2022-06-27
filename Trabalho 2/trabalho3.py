@@ -21,8 +21,6 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
     t = 0.0
     dx = x = 0.0 # y'(0) = y(0) = 0.0
 
-    print("tempo", "deslocamento", "velocidade", "aceleração")
-    print(t, x, dx, f_derivada(t, x, dx))
 
     outputs = [
         ("tempo", "deslocamento", "velocidade", "aceleração"),
@@ -46,21 +44,13 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
 
         t = t + h
         outputs.append((t, x, dx, f_derivada(t, x, dx)))
-        print(t, x, dx, f_derivada(t, x, dx))
     return {"result": outputs}
 
 
 def main(passo=10, tempo_total=60, m=1, c=0.1, k=2, vector_a=np.array([1.0, 2.0, 1.5]), vector_w=np.array([0.05, 1.0, 2.0])):
     
     answer = runge_kutta_nystrom(tempo_total, passo, m, c, k, vector_a, vector_w)
-    answer["variables"] = {"passo": passo, "tempo_total": tempo_total, "m": m, "c": c, "k": k, "vector_a": vector_a, "vector_w": vector_w}
+    answer["variables"] = {"trabalho": 3, "passo": passo, "tempo_total": tempo_total, "m": m, "c": c, "k": k, "vector_a": vector_a, "vector_w": vector_w}
 
     return answer
 
-
-resposta = main()
-
-for x in resposta["result"]:
-    print(x)
-
-print(resposta['variables'])
