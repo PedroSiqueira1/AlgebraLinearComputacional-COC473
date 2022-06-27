@@ -66,13 +66,15 @@ def bisection_method(vector_c, a, b, tolM):
 def newton_method(vector_c, x, tolM, max_iter):
 
     iter = 0
-    while (delta_x > tolM and iter < max_iter):
+    delta_x = 10
+    while (abs(delta_x) > tolM and iter < max_iter):
+        
         iter += 1
         f_x = apply_function(vector_c, x)
         derivate = derivate_function(vector_c, x)
 
         delta_x = (-1) * f_x / derivate 
-
+        
         x = x + delta_x
     
 
@@ -247,7 +249,3 @@ def main(ICOD = 1, method = 0, vector_c = np.array([1.0, 1.0, 1.0]), a = 100, b 
         
     print("Invalid ICOD")
     return {"error": "Invalid ICOD"}
-
-
-# print(main(ICOD=2, method=0, vector_c=np.array([1.0, 1.0, 1.0]), a=1, b=5, n=2, tolM=0.00001, max_iter=10000))
-# print(main(ICOD=2, method=1, vector_c=np.array([1.0, 1.0, 1.0]), a=1, b=5, n=2, tolM=0.00001, max_iter=10000))
