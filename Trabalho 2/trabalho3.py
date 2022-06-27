@@ -10,7 +10,8 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
         w1 = vector_w[0]
         w2 = vector_w[1]
         w3 = vector_w[2]
-        return a1*np.sin(w1*t) + a2*np.sin(w2*t) + a3*np.cos(w3*t)
+        deg2rad = np.pi/180
+        return a1*np.sin(w1*t*deg2rad) + a2*np.sin(w2*t*deg2rad) + a3*np.cos(w3*t*deg2rad)
 
 
     def f_derivada(t, x, dx): # returns ddx aka x''
@@ -29,8 +30,9 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
 
     for _ in range(n_steps):
 
-        k1 = h * f_derivada(t, x, dx)
+        k1 = 0.5*h * f_derivada(t, x, dx)
         q = 0.5*h * (dx + 0.5*k1)
+        print(k1, h, t, x, dx)
 
         k2 = 0.5*h * f_derivada((t+h/2), (x+q), (dx+k1))
 
@@ -39,8 +41,8 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
         
         k4 = 0.5*h * f_derivada((t+h), (x+l), (dx+ 2*k3))
 
-        x = x + h*(dx + 1/3*(k1 + k2 + k3))
-        dx = dx + 1/3*(k1 + 2*k2 + 2*k3 + k4)
+        x = x + h*(dx + (k1 + k2 + k3)/3)
+        dx = dx + (k1 + 2*k2 + 2*k3 + k4)/3
 
         t = t + h
         outputs.append((t, x, dx, f_derivada(t, x, dx)))
