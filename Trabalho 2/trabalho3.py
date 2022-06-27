@@ -2,7 +2,7 @@ import numpy as np
 import operations as op
 
 def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
-    def f_normal(t): # returns f(t)?
+    def f_normal(t): # returns f(t)
         a1 = vector_a[0]
         a2 = vector_a[1]
         a3 = vector_a[2]
@@ -22,7 +22,7 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
     dx = x = 0.0 # y'(0) = y(0) = 0.0
 
     outputs = [
-        ("t", "d", "v", "a"),
+        ("tempo", "deslocamento", "velocidade", "aceleração"),
         (t, x, dx, f_derivada(t, x, dx))
     ]
 
@@ -42,7 +42,6 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
         dx = dx + 1/3*(k1 + 2*k2 + 2*k3 + k4)
 
         t = t + h
-        
         outputs.append((t, x, dx, f_derivada(t, x, dx)))
     
     return {"result": outputs}
