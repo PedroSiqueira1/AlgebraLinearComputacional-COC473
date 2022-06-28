@@ -10,7 +10,7 @@ def runge_kutta_nystrom(tempo_total, h, m, c, k, vector_a, vector_w):
         w1 = vector_w[0]
         w2 = vector_w[1]
         w3 = vector_w[2]
-        deg2rad = np.pi/180
+        deg2rad = 1 # np.pi/180
         return a1*np.sin(w1*t*deg2rad) + a2*np.sin(w2*t*deg2rad) + a3*np.cos(w3*t*deg2rad)
 
 
