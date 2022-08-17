@@ -1,6 +1,6 @@
 # Álgebra Linear Computacional
 
-Repositório para guardar os trabalhos da matéria de Álgebra Linear Computacional (COC473), lecionada pelo professor Luis Volnei Sagrilo.
+Este é um repositório para guardar os trabalhos da matéria de Álgebra Linear Computacional (COC473), lecionada pelo professor Luis Volnei Sagrilo.
 
 # Sobre
 
